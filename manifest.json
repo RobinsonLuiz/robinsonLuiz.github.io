@@ -1,5 +1,6 @@
 {
   "name": "BRVicio",
+  "short_name": "BRVicio",
   "theme_color": "#2196f3",
   "background_color": "#2196f3",
   "display": "fullscreen",
