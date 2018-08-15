@@ -11,19 +11,19 @@ this.addEventListener('install', function (event) {
     event.waitUntil(caches.open(CACHE_NAME)
         .then(function (cache) {
             return cache.addAll([
-                '/index.html',
-                '/config.css',
-                '/sw.js',
-                '/manifest.json',
-                '/marvel.jpg',
-                '/steam.jpg',
-                '/social.png',
-                '/red.jpg',
-                '/switch.png',
-                '/tomas.jpg',
-                '/xbox.jpg',
-                '/nintendoSwitch.jpg',
-                '/hack.jpg',
+                './index.html',
+                './config.css',
+                './sw.js',
+                './manifest.json',
+                './marvel.jpg',
+                './steam.jpg',
+                './social.png',
+                './red.jpg',
+                './switch.png',
+                './tomas.jpg',
+                './xbox.jpg',
+                './nintendoSwitch.jpg',
+                './hack.jpg',
             ]);
         })
     );
