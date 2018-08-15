@@ -4,3 +4,49 @@ if ('serviceWorker' in navigator) {
     .then(() => {console.log('service worker registered')})
     .catch(() => {console.warn('service worker failed') })
 }
+
+
+var CACHE_NAME = 'static-v1';
+this.addEventListener('install', function (event) {
+    event.waitUntil(caches.open(CACHE_NAME)
+        .then(function (cache) {
+            return cache.addAll([
+                '/index.html',
+                '/config.css',
+                '/sw.js',
+                '/manifest.json',
+                '/marvel.jpg',
+                '/steam.jpg',
+                '/social.png',
+                '/red.jpg',
+                '/switch.png',
+                '/tomas.jpg',
+                '/xbox.jpg',
+                '/nintendoSwitch.jpg',
+                '/hack.jpg',
+            ]);
+        })
+    );
+})
+
+
+this.addEventListener('activate', function activator(event) {
+    event.waitUntil(caches.keys()
+        .then(function (keys) {
+            return Promise.all(keys.filter(function (key) {
+                return key.indexOf(CACHE_NAME) !== 0;}).map(function (key) {
+                    return caches.delete(key);
+                })
+            );
+        })
+    );
+});
+
+
+this.addEventListener('fetch', function (event) {
+    event.respondWith(
+        caches.match(event.request).then(function (cachedResponse) {
+            return cachedResponse || fetch(event.request);
+        })
+    );
+});
