@@ -11,6 +11,7 @@ this.addEventListener('install', function (event) {
     event.waitUntil(caches.open(CACHE_NAME)
         .then(function (cache) {
             return cache.addAll([
+                './hack.html',
                 './index.html',
                 './config.css',
                 './sw.js',
