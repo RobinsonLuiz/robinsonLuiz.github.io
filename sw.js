@@ -16,16 +16,7 @@ this.addEventListener('install', function (event) {
                 '/index.html',
                 '/config.css',
                 '/sw.js',
-                '/manifest.json',
-                '/marvel.jpg',
-                '/steam.jpg',
-                '/social.png',
-                '/red.jpg',
-                '/switch.png',
-                '/tomas.jpg',
-                '/xbox.jpg',
-                '/nintendoSwitch.jpg',
-                '/hack.jpg',
+                '/manifest.json'
             ]);
         })
     );

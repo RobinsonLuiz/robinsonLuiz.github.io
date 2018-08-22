@@ -14,64 +14,33 @@
 <body>
 <div class="jumbotron">
   <div class="container text-center">
-    <h1>BRVicio</h1>      
-    <p>Bem-Vindo ao BRVicio</p>
+    <h1>ToDoList</h1>      
+    <p>Welcome to To Do List</p>
   </div>
 </div>
 
-<div class="container">    
+<div class="container">     
   <div class="row">
     <div class="col-sm-4">
-      <div class="panel panel-primary">
-        <div class="panel-heading text-center" >Steam possui 33 milhões de usuários ativos por dia e 67 milhões mensalmente</div>
-        <img src="./steam.jpg" class="img-responsive" style="width:100%" alt="Image">
-        <div class="panel-footer text-center">Clique na Imagem para saber mais</div>
-      </div>
-    </div>
-
-    <div class="col-sm-4"> 
-      <div class="panel panel-danger">
-        <div class="panel-heading text-center">Trailer de Red Dead Redemption 2 foi capturado no PS4</div>
-        <img src="./red.jpg" class="img-responsive" style="width:100%" alt="Image">
-        <div class="panel-footer text-center">Clique na Imagem para saber mais</div>
-      </div>
-    </div>
-    <div class="col-sm-4"> 
-      <div class="panel panel-success">
-        <div class="panel-heading text-center">Venda do Switch nos EUA podem ser as maiores para um console Nintendo desde 1995</div>
-        <img src="./switch.png" class="img-responsive" style="width:100%" alt="Image">
-        <div class="panel-footer text-center">Clique na Imagem para saber mais</div>
-      </div>
+      <h1>To Do List</h1>
+        <label for="todolist">To Do</label>
+        <input class="todo" type="text" placeholder="Insira um todo list" />
+        <button class="btn btn-enviar"> Enviar </button>
+      </form>
     </div>
   </div>
-  </div> <br>
-  <div class="container">    
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="panel panel-primary">
-        <div class="panel-heading text-center" >Ultra Street Fighter 2 teve melhor lançamento que Marvel vs Capcom no Reino Unido</div>
-         <img src="./marvel.jpg" class="img-responsive" style="width:100%" alt="Image">
-        <div class="panel-footer text-center">Clique na Imagem para saber mais</div>
-      </div>
-    </div>
 
-    <div class="col-sm-4"> 
-      <div class="panel panel-danger">
-        <div class="panel-heading text-center">Microsoft explica como os jogos do Xbox One X rodarão em TVs 1080p</div>
-       <img src="./xbox.jpg" class="img-responsive" style="width:100%" alt="Image">
-        <div class="panel-footer text-center">Clique na Imagem para saber mais</div>
-      </div>
-    </div>
-    <div class="col-sm-4"> 
-      <div class="panel panel-success">
-        <div class="panel-heading text-center">Esqueça os Bitcoins, "nRansomware" exige o pagamento do resgate em nudes</div>
-        <a href="./hack.html">
-          <img src="./hack.jpg" class="img-responsive" style="width:100%" alt="Image">
-        </a>
-        <div class="panel-footer text-center">Clique na Imagem para saber mais</div>
-      </div>
-    </div>
-  </div>
+  <table class="table table-hover todolist-render">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Data</th>
+          <th>Deletar</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
 
 </div>
 
@@ -83,5 +52,6 @@
     </form>
  </footer>
 <script src="sw.js"></script>
+<script src="todolist.js"></script>
 </body>
 </html>
