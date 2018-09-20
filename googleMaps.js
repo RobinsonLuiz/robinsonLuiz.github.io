@@ -1,13 +1,17 @@
 function initialize() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
-            var directionsService = new google.maps.DirectionsService;
-            var directionsDisplay = new google.maps.DirectionsRenderer;
             infowindow = new google.maps.InfoWindow();
             var fenway = {lat: position.coords.latitude, lng: position.coords.longitude};
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: fenway,
                 zoom: 20
+            });
+            var directionsService = new google.maps.DirectionsService;
+            var directionsDisplay = new google.maps.DirectionsRenderer({
+                draggable: true,
+                map: map,
+                panel: document.getElementById('right-panel')
             });
             var panorama = new google.maps.StreetViewPanorama(
                 document.getElementById('pano'), {
@@ -47,6 +51,7 @@ function initialize() {
                     }, function(response, status) {
                         if (status === 'OK') {
                             directionsDisplay.setDirections(response);
+                            computeTotalDistance(directionsDisplay.getDirections());
                         } else {
                             window.alert('Directions request failed due to ' + status);
                         }
@@ -57,5 +62,16 @@ function initialize() {
             }            
             map.setStreetView(panorama);
         });
+
+        function computeTotalDistance(result) {
+            console.log(result);
+            var total = 0;
+            var myroute = result.routes[0];
+            for (var i = 0; i < myroute.legs.length; i++) {
+              total += myroute.legs[i].distance.value;
+            }
+            total = total / 1000;
+            document.getElementById('total').innerHTML = total + ' km';
+          }
     }
 }
