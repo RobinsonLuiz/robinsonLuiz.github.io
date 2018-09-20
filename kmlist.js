@@ -13,8 +13,6 @@ btn_enviar.addEventListener('click', function(event) {
                 "rotas": rotas,
                 "km": document.querySelector('#total').textContent
             }
-            var pano = document.querySelector("#pano");
-            pano.style = "margin-bottom:" + 10 * todo.querySelectorAll('div').length + "px"; 
             localStorage.setItem("id-"+(localStorage.length + 1), JSON.stringify(rotas_send));
             var tr = document.createElement('tr');
             var td = document.createElement('td');
@@ -74,7 +72,3 @@ buttons_del.forEach(button => {
         button.parentElement.parentElement.remove();
     })
 }) 
-
-var teste = initialize();
-
-console.log(teste);
