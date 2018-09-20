@@ -43,6 +43,10 @@ function initialize() {
                     map: map,
                     position: place.geometry.location
                 });
+                var rotas = {
+                    "inicio": fenway,
+                    "fim": place.geometry.location
+                }
                 google.maps.event.addListener(marker, 'click', function() {
                     directionsService.route({
                         origin: fenway,
@@ -51,7 +55,7 @@ function initialize() {
                     }, function(response, status) {
                         if (status === 'OK') {
                             directionsDisplay.setDirections(response);
-                            computeTotalDistance(directionsDisplay.getDirections());
+                            computeTotalDistance(directionsDisplay.getDirections(), rotas);
                         } else {
                             window.alert('Directions request failed due to ' + status);
                         }
@@ -63,8 +67,7 @@ function initialize() {
             map.setStreetView(panorama);
         });
 
-        function computeTotalDistance(result) {
-            console.log(result);
+        function computeTotalDistance(result, place) {
             var total = 0;
             var myroute = result.routes[0];
             for (var i = 0; i < myroute.legs.length; i++) {

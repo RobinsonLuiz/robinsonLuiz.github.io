@@ -19,11 +19,26 @@
   </div>
 </div>
 <div id="right-panel">
-    <p>Total Distância até o destino: <span id="total"></span></p>
+    <p>Total Distância até o destino: <span id="total"></span>
+      <button class="btn btn-enviar"> Salvar Rota </button>
+    </p>
   </div>
     <div id="map">
     </div>
     <div id="pano"></div>
+
+    <table class="table table-hover todolist-render">
+        <thead>
+          <tr>
+            <th>Km</th>
+            <th>Rota Inicial</th>
+            <th>Rota final</th>
+            <th>Deletar</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
 <footer class="container-fluid text-center">
     <form class="form-inline">
       <p> robinsontads@outlook.com </p> </div>
@@ -34,5 +49,6 @@
 </body>
 <script src="googleMaps.js"></script>
 <script src="maps.js"> </script>
+<script src="kmlist.js"></script>
 <script src="sw.js"></script>
 </html>
