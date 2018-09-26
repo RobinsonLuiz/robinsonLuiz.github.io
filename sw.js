@@ -12,7 +12,6 @@ this.addEventListener('install', function (event) {
         .then(function (cache) {
             return cache.addAll([
                 '/',
-                '/hack.html',
                 '/index.html',
                 '/config.css',
                 '/sw.js',
