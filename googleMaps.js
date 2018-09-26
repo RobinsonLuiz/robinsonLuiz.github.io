@@ -38,7 +38,6 @@ function initialize() {
             }
 
             function createMarker(place) {
-                var placeLoc = place.geometry.location;
                 var marker = new google.maps.Marker({
                     map: map,
                     position: place.geometry.location
@@ -67,7 +66,7 @@ function initialize() {
             map.setStreetView(panorama);
         });
 
-        function computeTotalDistance(result, place) {
+        function computeTotalDistance(result) {
             var total = 0;
             var myroute = result.routes[0];
             for (var i = 0; i < myroute.legs.length; i++) {
