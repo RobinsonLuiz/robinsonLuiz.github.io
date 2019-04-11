@@ -134,10 +134,9 @@
 <script src="./game/load.js"></script>
 <script src="./game/liveMode.js"></script>
 <script>
-  $('body').bind('copy paste', function (e) {
-    e.preventDefault();
-    console.log(e.clipboardData.items);
-  });
+  document.querySelector('body').addEventListener('touchmove', function(e) {
+    alert("toco");
+  })
 </script>
 
 </html>
