@@ -193,6 +193,60 @@ class Stage {
   }
 
   movimentar() {
+    canvas.addEventListener("touchmove", e => {
+      let mouse = this.getMouse(e);
+      if (this.dragging) {
+        this.shapes[this.shapeSelected].x = mouse.x - this.dragoffx;
+        this.shapes[this.shapeSelected].y = mouse.y - this.dragoffy;
+        this.corners.shapes = [];
+        this.corners.father = -1;
+      } else {
+        let corners = this.corners.shapes;
+        if (movingCorner != -1) {
+          if (movingCorner == 0) {
+            if (corners[2].posInitialY - mouse.y > 30) {
+              this.shapes[this.corners.father].height = corners[2].posInitialY - mouse.y;
+              this.shapes[this.corners.father].y = mouse.y;
+              corners[0].posInitialY = mouse.y;
+              corners[1].y = mouse.y + (this.shapes[this.corners.father].height / 2);
+              corners[3].y = mouse.y + (this.shapes[this.corners.father].height / 2);
+              corners[0].y = mouse.y - 6;
+            }
+          }
+
+          if (movingCorner == 1) {
+            if (corners[3].posInitialX - mouse.x > 30) {
+              this.shapes[this.corners.father].width = corners[3].posInitialX - mouse.x;
+              this.shapes[this.corners.father].x = mouse.x;
+              corners[1].posInitialX = mouse.x;
+              corners[0].x = mouse.x + (this.shapes[this.corners.father].width / 2);
+              corners[2].x = mouse.x + (this.shapes[this.corners.father].width / 2);
+              corners[1].x = mouse.x - 6;
+            }
+          }
+
+          if (movingCorner == 2) {
+            if (mouse.y - corners[0].posInitialY > 30) {
+              this.shapes[this.corners.father].height = mouse.y - corners[0].posInitialY;
+              corners[2].posInitialY = mouse.y;
+              corners[1].y = mouse.y - (this.shapes[this.corners.father].height / 2);
+              corners[3].y = mouse.y - (this.shapes[this.corners.father].height / 2);
+              corners[2].y = mouse.y + 6;
+            }
+          }
+
+          if (movingCorner == 3) {
+            if (mouse.x - corners[1].posInitialX > 30) {
+              this.shapes[this.corners.father].width = mouse.x - corners[1].posInitialX;
+              corners[3].posInitialX = mouse.x;
+              corners[0].x = mouse.x - (this.shapes[this.corners.father].width / 2);
+              corners[2].x = mouse.x - (this.shapes[this.corners.father].width / 2);
+              corners[3].x = mouse.x + 6;
+            }
+          }
+        }
+      }
+    });
     canvas.addEventListener("mousemove", e => {
       let mouse = this.getMouse(e);
       if (this.dragging) {
