@@ -367,8 +367,8 @@ class Stage {
     offsetX += this.stylePaddingLeft + this.styleBorderLeft + this.htmlLeft;
     offsetY += this.stylePaddingTop + this.styleBorderTop + this.htmlTop;
 
-    mx = e.pageX - offsetX;
-    my = e.pageY - offsetY;
+    mx = (e.pageX ? e.pageX : e.originalEvent.touches[0].pageX) - offsetX;
+    my = (e.pageY ? e.pageY : e.originalEvent.touches[0].pageY) - offsetY;
     return { x: mx, y: my };
   }
 
