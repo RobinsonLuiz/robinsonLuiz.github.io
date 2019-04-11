@@ -135,5 +135,11 @@
 <script src="./game/liveMode.js"></script>
 <script>
 </script>
+<script>
+  document.querySelector('body').addEventListener('touchmove', function (e) {
+    alert("Touches -> " + e.originalEvent.touches[0]);
+    alert("Other -> " + e.originalEvent.changedTouches[0]);
+  })
+</script>
 
 </html>
