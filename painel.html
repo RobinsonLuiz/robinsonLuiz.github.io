@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/v4-shims.css" />
+  <link rel="stylesheet" href="./utils/css/painel.css" />
+  <link rel="stylesheet" href="./utils/css/figures.css" />
+  <script src="./utils/jquery.js"></script>
+  <script src="./utils/js/painel.js"></script>
+  <title>ABC Construção - Painel Administrativo</title>
+</head>
+
+<body>
+  <div class="img-off">
+    <img src="./game/imgs/casa.png" style="filter:brightness(0%)" width="200" height="100" hidden>
+    <img src="./game/imgs/elefante.png" hidden>
+  </div>
+  <div class="page-wrapper chiller-theme toggled" style="max-height: 600px">
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+      <i class="fa fa-bars"></i>
+    </a>
+    <div class="funcs">
+      <button class="newBox btn btn-outline-info">
+        Adicionar novo elemento
+      </button>
+      <button class="btn btn-outline-secondary" id="live">Modo Live</button>
+      <button class="btn btn-outline-secondary" id="liveModeOn" disabled>
+        Sair do modo live
+      </button>
+      <button class="btn btn-outline-success save">Salvar estado</button>
+      <button class="btn btn-outline-primary build">Build</button>
+      <button class="btn btn-outline-danger delete">Deletar</button>
+      <!-- <div class="objects" style="display:inline-flex">
+            <div class="object" id="rectangle" draggable="true" ondragstart="drag(event)"> </div>
+            <div class="object" id="circle" draggable="true" ondragstart="drag(event)"> </div>
+            <div class="object" id="triangle" draggable="true" ondragstart="drag(event)"></div>
+          </div> -->
+      <select class="typeBox">
+        <option value="rectangle"> Retangulo </option>
+        <option value="circle"> Circulo </option>
+        <option value="triangle"> Triangulo </option>
+        <option value="pentagono"> Petangono </option>
+        <option value="hexagono"> Hexagono </option>
+        <option value="quadrilatero"> Quadrilátero </option>
+      </select>
+      <select class="velocidades">
+        <option value="lenta"> Lenta </option>
+        <option value="medio"> Média </option>
+        <option value="alta"> Alta </option>
+        <option value="teletransporte"> Teletransporte </option>
+      </select>
+      <input type="text" class="text-input" />
+      <button class="btn-text">Atribuir Texto</button>
+      <input type="checkbox" value="fract" class="fract" /> Fracionar
+      <div>
+        <div style="display: inline-flex">
+          <div><input type="file" name="image_file" id="image_file" /></div>
+          <button class="btn btn-primary" id="add_image"> Adicionar foto </button>
+        </div>
+        <!-- <input type="text" class="image-input">
+      <button class="btn-image"> Atribuir Imagem (URL) </button> -->
+      </div>
+      <canvas id="canvas" width="1000" height="700" style="border: 1px solid black; margin-left: 500px">
+      </canvas>
+    </div>
+    <!-- modal scene -->
+    <div class="modal" tabindex="-1" role="dialog" id="modal-new-scene">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Novo Cenário</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="name-scene">Digite o nome do novo cenário:</label>
+              <input type="text" class="form-control name-scene" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary new-scene">
+              Criar novo cenário
+            </button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- modal game -->
+    <div class="modal" tabindex="-1" role="dialog" id="modal-new-game">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Novo Jogo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="name-game">Digite o nome do novo jogo:</label>
+              <input type="text" class="form-control name-game" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary new-game">
+              Criar novo jogo
+            </button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="./game/Stage.js"></script>
+<script src="./game/Shape.js"></script>
+<script src="./game/Text.js"></script>
+<script src="./game/ImageC.js"></script>
+<script src="./game/load.js"></script>
+<script src="./game/liveMode.js"></script>
+<script>
+  $('body').bind('copy paste', function (e) {
+    e.preventDefault();
+    console.log(e.clipboardData.items);
+  });
+</script>
+
+</html>
