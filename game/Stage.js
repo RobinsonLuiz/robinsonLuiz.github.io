@@ -73,7 +73,8 @@ class Stage {
   clicar() {
     $(this.canvas).on("mousedown touchdown", e => {
       e.preventDefault();
-      alert(JSON.stringify(e));
+      alert(e.pageX);
+      alert(JSON.stringify(e.changedTouches));
       let mouse = this.mouse.getPosition(this, e);
       movingCorner = -1;
       for (let i = this.shapes.length - 1; i >= 0; i--) {
