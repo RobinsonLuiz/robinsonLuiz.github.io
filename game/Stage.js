@@ -1,22 +1,15 @@
 
 let movingCorner = -1;
 class Stage {
-  stylePaddingLeft;
-  stylePaddingTop;
-  styleBorderLeft;
-  styleBorderTop;
-  canvas;
-  shapes;
-  toJSON;
-  constructor(canvas) {
-    canvas = canvas;
+
+  constructor(canvas, id) {
+    this.id = id;
+    this.canvas = canvas;
+    this.mouse = new Mouse();
     this.width = canvas.width;
     this.height = canvas.height;
     this.context = canvas.getContext("2d");
-    this.canvas = canvas;
     this.html = document.body.parentNode;
-    this.htmlTop = this.html.offsetTop;
-    this.htmlLeft = this.html.offsetLeft;
     this.shapes = [];
     this.fps = 30;
     this.dragging = false;
@@ -29,7 +22,6 @@ class Stage {
       father: -1
     };
     this.liveMode = false;
-    this.loadContext();
     this.startEvents();
     this.loop();
   }
@@ -54,56 +46,35 @@ class Stage {
     return this.canvas;
   }
 
-  loadContext() {
-    if (document.defaultView && document.defaultView.getComputedStyle) {
-      this.stylePaddingLeft =
-        parseInt(
-          document.defaultView.getComputedStyle(canvas, null)["paddingLeft"],
-          10
-        ) || 0;
-      this.stylePaddingTop =
-        parseInt(
-          document.defaultView.getComputedStyle(canvas, null)["paddingTop"],
-          10
-        ) || 0;
-      this.styleBorderLeft =
-        parseInt(
-          document.defaultView.getComputedStyle(canvas, null)[
-          "borderLeftWidth"
-          ],
-          10
-        ) || 0;
-      this.styleBorderTop =
-        parseInt(
-          document.defaultView.getComputedStyle(canvas, null)["borderTopWidth"],
-          10
-        ) || 0;
-    }
-  }
-
   duploClique() {
-    canvas.addEventListener("dblclick", e => {
-      let mouse = this.getMouse(e);
+    this.canvas.addEventListener("dblclick", e => {
+      let mouse = this.mouse.getPosition(this, e);
       let mx = mouse.x;
       let my = mouse.y;
-      let shapes = this.shapes;
-      for (let i = 0; i < shapes.length; i++) {
-        if (shapes[i].contains(mx, my)) {
-          let color = document.createElement("input");
-          color.type = "color";
-          $(color).trigger("click");
-          color.addEventListener("change", () => {
-            shapes[i].updateColor(color.value);
-            color.remove();
-          });
+      let zIndex = -1;
+      for (let i = 0; i < this.shapes.length; i++) {
+        if (this.shapes[i].contains(mx, my) && this.shapes[i].zIndex >= zIndex) {
+          zIndex = i;
         }
+      }
+      if (zIndex != -1) {
+        let color = document.createElement("input");
+        color.type = "color";
+        $(color).trigger("click");
+        color.addEventListener("change", () => {
+          this.shapes[zIndex].updateColor(color.value);
+          color.remove();
+          zIndex = -1;
+        });
       }
     });
   }
 
   clicar() {
-    canvas.addEventListener("mousedown", e => {
-      let mouse = this.getMouse(e);
+    $(this.canvas).on("mousedown touchdown", e => {
+      e.preventDefault();
+      alert(JSON.stringify(e));
+      let mouse = this.mouse.getPosition(this, e);
       movingCorner = -1;
       for (let i = this.shapes.length - 1; i >= 0; i--) {
         if (this.shapes[i].contains(mouse.x, mouse.y) && !this.shapes[i].used) {
@@ -112,12 +83,14 @@ class Stage {
           this.dragoffy = mouse.y - this.shapes[this.shapeSelected].y;
           this.shapes[this.shapeSelected].posInitialX = this.shapes[this.shapeSelected].x;
           this.shapes[this.shapeSelected].posInitialY = this.shapes[this.shapeSelected].y;
-          this.corners.shapes = [new Shape(this.shapes[this.shapeSelected].x + (this.shapes[this.shapeSelected].width / 2) - 3, this.shapes[this.shapeSelected].y - 7, 10, 10, 1, true, true, 0, "red"),
-          new Shape(this.shapes[this.shapeSelected].x - 3, this.shapes[this.shapeSelected].y + (this.shapes[this.shapeSelected].height / 2) - 3, 10, 10, 1, true, true, 0, "red"),
-          new Shape(this.shapes[this.shapeSelected].x + (this.shapes[this.shapeSelected].width / 2) - 3, this.shapes[this.shapeSelected].y + this.shapes[this.shapeSelected].height - 5, 10, 10, 1, true, true, 0, "red"),
-          new Shape(this.shapes[this.shapeSelected].x + this.shapes[this.shapeSelected].width - 3, this.shapes[this.shapeSelected].y + (this.shapes[this.shapeSelected].height / 2) - 3, 10, 10, 1, true, true, 0, "red")
-          ];
-          this.corners.father = this.shapeSelected;
+          if (!this.liveMode) {
+            this.corners.shapes = [new Shape(this.shapes[this.shapeSelected].x + (this.shapes[this.shapeSelected].width / 2) - 5, this.shapes[this.shapeSelected].y - 7, 13, 13, 99999, true, true, 0, "red"),
+            new Shape(this.shapes[this.shapeSelected].x - 5, this.shapes[this.shapeSelected].y + (this.shapes[this.shapeSelected].height / 2) - 3, 13, 13, 99999, true, true, 0, "red"),
+            new Shape(this.shapes[this.shapeSelected].x + (this.shapes[this.shapeSelected].width / 2) - 5, this.shapes[this.shapeSelected].y + this.shapes[this.shapeSelected].height - 5, 13, 13, 99999, true, true, 0, "red"),
+            new Shape(this.shapes[this.shapeSelected].x + this.shapes[this.shapeSelected].width - 6, this.shapes[this.shapeSelected].y + (this.shapes[this.shapeSelected].height / 2) - 3, 13, 13, 99999, true, true, 0, "red")
+            ];
+            this.corners.father = this.shapeSelected;
+          }
           break;
         }
         this.shapeSelected = -1;
@@ -159,8 +132,8 @@ class Stage {
 
   removeShape() {
     document.addEventListener("keydown", e => {
-      if (this.shapeSelected != -1 && e.keyCode == 46) {
-        this.shapes.splice(this.shapeSelected, 1);
+      if (this.corners.father != -1 && e.keyCode == 46) {
+        this.shapes = this.shapes.filter((a) => a != this.shapes[this.corners.father]);
         this.corners.shapes = [];
         this.corners.father = -1;
         this.toJSON["Stage"] = this.shapes;
@@ -178,9 +151,7 @@ class Stage {
   loop() {
     setInterval(() => {
       this.getContext().clearRect(0, 0, this.width, this.height);
-      for (let i = 0; i < this.shapes.length; i++) {
-        this.shapes[i].update();
-      }
+      for (let i = 0; i < this.shapes.length; i++) this.shapes[i].update();
       this.draw();
     }, 1000 / this.fps);
   }
@@ -193,8 +164,8 @@ class Stage {
   }
 
   movimentar() {
-    canvas.addEventListener("touchmove", e => {
-      let mouse = this.getMouse(e);
+    this.canvas.addEventListener("mousemove", e => {
+      let mouse = this.mouse.getPosition(this, e);
       if (this.dragging) {
         this.shapes[this.shapeSelected].x = mouse.x - this.dragoffx;
         this.shapes[this.shapeSelected].y = mouse.y - this.dragoffy;
@@ -205,22 +176,22 @@ class Stage {
         if (movingCorner != -1) {
           if (movingCorner == 0) {
             if (corners[2].posInitialY - mouse.y > 30) {
-              this.shapes[this.corners.father].height = corners[2].posInitialY - mouse.y;
+              this.shapes[this.corners.father].height = corners[2].posInitialY - mouse.y + 6;
               this.shapes[this.corners.father].y = mouse.y;
               corners[0].posInitialY = mouse.y;
-              corners[1].y = mouse.y + (this.shapes[this.corners.father].height / 2);
-              corners[3].y = mouse.y + (this.shapes[this.corners.father].height / 2);
-              corners[0].y = mouse.y - 6;
+              corners[1].y = mouse.y + (this.shapes[this.corners.father].height / 2) - 3;
+              corners[3].y = mouse.y + (this.shapes[this.corners.father].height / 2) - 3;
+              corners[0].y = mouse.y - 8;
             }
           }
 
           if (movingCorner == 1) {
             if (corners[3].posInitialX - mouse.x > 30) {
-              this.shapes[this.corners.father].width = corners[3].posInitialX - mouse.x;
+              this.shapes[this.corners.father].width = corners[3].posInitialX - mouse.x + 6;
               this.shapes[this.corners.father].x = mouse.x;
               corners[1].posInitialX = mouse.x;
-              corners[0].x = mouse.x + (this.shapes[this.corners.father].width / 2);
-              corners[2].x = mouse.x + (this.shapes[this.corners.father].width / 2);
+              corners[0].x = mouse.x + (this.shapes[this.corners.father].width / 2) - 5;
+              corners[2].x = mouse.x + (this.shapes[this.corners.father].width / 2) - 5;
               corners[1].x = mouse.x - 6;
             }
           }
@@ -229,73 +200,19 @@ class Stage {
             if (mouse.y - corners[0].posInitialY > 30) {
               this.shapes[this.corners.father].height = mouse.y - corners[0].posInitialY;
               corners[2].posInitialY = mouse.y;
-              corners[1].y = mouse.y - (this.shapes[this.corners.father].height / 2);
-              corners[3].y = mouse.y - (this.shapes[this.corners.father].height / 2);
-              corners[2].y = mouse.y + 6;
+              corners[1].y = mouse.y - (this.shapes[this.corners.father].height / 2) + 3;
+              corners[3].y = mouse.y - (this.shapes[this.corners.father].height / 2) + 3;
+              corners[2].y = mouse.y + 3;
             }
           }
 
           if (movingCorner == 3) {
             if (mouse.x - corners[1].posInitialX > 30) {
-              this.shapes[this.corners.father].width = mouse.x - corners[1].posInitialX;
+              this.shapes[this.corners.father].width = mouse.x - corners[1].posInitialX - 6;
               corners[3].posInitialX = mouse.x;
-              corners[0].x = mouse.x - (this.shapes[this.corners.father].width / 2);
-              corners[2].x = mouse.x - (this.shapes[this.corners.father].width / 2);
-              corners[3].x = mouse.x + 6;
-            }
-          }
-        }
-      }
-    });
-    canvas.addEventListener("mousemove", e => {
-      let mouse = this.getMouse(e);
-      if (this.dragging) {
-        this.shapes[this.shapeSelected].x = mouse.x - this.dragoffx;
-        this.shapes[this.shapeSelected].y = mouse.y - this.dragoffy;
-        this.corners.shapes = [];
-        this.corners.father = -1;
-      } else {
-        let corners = this.corners.shapes;
-        if (movingCorner != -1) {
-          if (movingCorner == 0) {
-            if (corners[2].posInitialY - mouse.y > 30) {
-              this.shapes[this.corners.father].height = corners[2].posInitialY - mouse.y;
-              this.shapes[this.corners.father].y = mouse.y;
-              corners[0].posInitialY = mouse.y;
-              corners[1].y = mouse.y + (this.shapes[this.corners.father].height / 2);
-              corners[3].y = mouse.y + (this.shapes[this.corners.father].height / 2);
-              corners[0].y = mouse.y - 6;
-            }
-          }
-
-          if (movingCorner == 1) {
-            if (corners[3].posInitialX - mouse.x > 30) {
-              this.shapes[this.corners.father].width = corners[3].posInitialX - mouse.x;
-              this.shapes[this.corners.father].x = mouse.x;
-              corners[1].posInitialX = mouse.x;
-              corners[0].x = mouse.x + (this.shapes[this.corners.father].width / 2);
-              corners[2].x = mouse.x + (this.shapes[this.corners.father].width / 2);
-              corners[1].x = mouse.x - 6;
-            }
-          }
-
-          if (movingCorner == 2) {
-            if (mouse.y - corners[0].posInitialY > 30) {
-              this.shapes[this.corners.father].height = mouse.y - corners[0].posInitialY;
-              corners[2].posInitialY = mouse.y;
-              corners[1].y = mouse.y - (this.shapes[this.corners.father].height / 2);
-              corners[3].y = mouse.y - (this.shapes[this.corners.father].height / 2);
-              corners[2].y = mouse.y + 6;
-            }
-          }
-
-          if (movingCorner == 3) {
-            if (mouse.x - corners[1].posInitialX > 30) {
-              this.shapes[this.corners.father].width = mouse.x - corners[1].posInitialX;
-              corners[3].posInitialX = mouse.x;
-              corners[0].x = mouse.x - (this.shapes[this.corners.father].width / 2);
-              corners[2].x = mouse.x - (this.shapes[this.corners.father].width / 2);
-              corners[3].x = mouse.x + 6;
+              corners[0].x = mouse.x - (this.shapes[this.corners.father].width / 2) - 5;
+              corners[2].x = mouse.x - (this.shapes[this.corners.father].width / 2) - 5;
+              corners[3].x = mouse.x - 6;
             }
           }
         }
@@ -304,9 +221,9 @@ class Stage {
   }
 
   soltar() {
-    canvas.addEventListener("mouseup", e => {
+    this.canvas.addEventListener("mouseup", e => {
       this.dragging = false;
-      if (this.shapeSelected != -1 && !this.dragging) {
+      if (this.shapeSelected != -1 && this.liveMode) {
         let angle = Math.atan2(this.shapes[this.shapeSelected].posInitialY
           - this.shapes[this.shapeSelected].y, this.shapes[this.shapeSelected].posInitialX
           - this.shapes[this.shapeSelected].x);
@@ -348,28 +265,6 @@ class Stage {
     this.sound.setAttribute("controls", "none");
     this.sound.style.display = "none";
     this.sound.play();
-  }
-
-  getMouse(e) {
-    let element = canvas,
-      offsetX = 0,
-      offsetY = 0,
-      mx,
-      my;
-    // Compute the total offset
-    if (element.offsetParent !== undefined) {
-      do {
-        offsetX += element.offsetLeft;
-        offsetY += element.offsetTop;
-      } while ((element = element.offsetParent));
-    }
-
-    offsetX += this.stylePaddingLeft + this.styleBorderLeft + this.htmlLeft;
-    offsetY += this.stylePaddingTop + this.styleBorderTop + this.htmlTop;
-
-    mx = (e.pageX ? e.pageX : e.originalEvent.touches[0].pageX) - offsetX;
-    my = (e.pageY ? e.pageY : e.originalEvent.touches[0].pageY) - offsetY;
-    return { x: mx, y: my };
   }
 
   startEvents() {

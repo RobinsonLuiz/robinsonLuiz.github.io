@@ -1,0 +1,214 @@
+<html>
+
+<body>
+	<canvas id="canvas1" width="800" height="600" style="position:absolute; top:0px; left:0px"></canvas>
+	<div id="div1" style="position:absolute; top:10px; left:850px"></div>
+</body>
+<script>
+	let context = document.getElementById("canvas1").getContext("2d");
+	let fps = 20;
+
+	function Mouse() {
+		this.x = 0;
+		this.y = 0;
+		this.pressed = false;
+	}
+
+	let mouse = new Mouse();
+
+	document.getElementById("canvas1").addEventListener('mousedown', onMouseDown);
+	document.getElementById("canvas1").addEventListener('mouseup', onMouseUp);
+	document.getElementById("canvas1").addEventListener('mousemove', onMouseMove);
+
+	function onMouseDown(event) {
+		mouse.pressed = true;
+		mouse.x = event.clientX;
+		mouse.y = event.clientY;
+
+		document.getElementById("div1").innerHTML = "(" + mouse.x + "," + mouse.y + ")";
+
+		let figure = 0;
+
+		for (figure = 0; figure < figures.length; figure++) {
+			if (figures[figure].in(mouse.x, mouse.y)) {
+				selectedFigure = figure;
+				corners = [new Figure(figures[figure].x + (figures[figure].width / 2), figures[figure].y - 7, 7, 7, "red", 0),
+
+				new Figure(figures[figure].x - 7, figures[figure].y + (figures[figure].height / 2), 7, 7, "red", 0),
+				new Figure(figures[figure].x + (figures[figure].width / 2), figures[figure].y + figures[figure].height + 3, 7, 7, "red", 0),
+				new Figure(figures[figure].x + figures[figure].width + 3, figures[figure].y + (figures[figure].height / 2), 7, 7, "red", 0)];
+				break;
+			}
+		}
+
+		//	if (movingFigure == -1)
+		//	{	for (let figure = 0; figure < figures.length; figure++)
+		//		{	if (figures[figure].in(mouse.x, mouse.y))
+		//			{	movingFigure = figure;
+		//				figures[figure].x = mouse.x;
+		//				figures[figure].y = mouse.y;
+		//				break;
+		//			}
+		//		}
+		//	}
+
+		let corner = 0;
+
+		if (selectedFigure != -1) {
+			for (corner = 0; corner < corners.length; corner++) {
+				if (corners[corner].in(mouse.x, mouse.y)) {
+					movingCorner = corner;
+					break;
+				}
+			}
+		}
+
+		if ((figure == figures.length) && (corner == corners.length)) {
+			selectedFigure = -1;
+			movingCorner = -1;
+			corners = [];
+		}
+
+	}
+
+	function onMouseUp(event) {
+		mouse.pressed = false;
+
+		if (movingFigure != -1) {
+			let angle = Math.atan2(figures[movingFigure].inicialY - figures[movingFigure].y, figures[movingFigure].inicialX - figures[movingFigure].x);
+			figures[movingFigure].velocityX = figures[movingFigure].velocity * Math.cos(angle);
+			figures[movingFigure].velocityY = figures[movingFigure].velocity * Math.sin(angle);
+			movingFigure = -1;
+		}
+
+		movingCorner = -1;
+	}
+
+	function onMouseMove(event) {
+
+		document.getElementById("div1").innerHTML = "(" + mouse.x + "," + mouse.y + ")<br/>SF = " + selectedFigure + "<br/>MF = " + movingFigure + "<br/>MC = " + movingCorner;
+
+		if (mouse.pressed) {
+			mouse.x = event.clientX;
+			mouse.y = event.clientY;
+		}
+
+		if (movingFigure != -1) {
+			figures[movingFigure].x = mouse.x;
+			figures[movingFigure].y = mouse.y;
+		}
+
+		if (movingCorner == 0) {
+			if (corners[2].inicialY - mouse.y > 30) {
+				figures[selectedFigure].height = corners[2].inicialY - mouse.y;
+				figures[selectedFigure].y = mouse.y;
+				corners[0].inicialY = mouse.y;
+				corners[1].y = mouse.y + (figures[selectedFigure].height / 2);
+				corners[3].y = mouse.y + (figures[selectedFigure].height / 2);
+				corners[0].y = mouse.y - 6;
+			}
+		}
+
+		if (movingCorner == 1) {
+			if (corners[3].inicialX - mouse.x > 30) {
+				figures[selectedFigure].width = corners[3].inicialX - mouse.x;
+				figures[selectedFigure].x = mouse.x;
+				corners[1].inicialX = mouse.x;
+				corners[0].x = mouse.x + (figures[selectedFigure].width / 2);
+				corners[2].x = mouse.x + (figures[selectedFigure].width / 2);
+				corners[1].x = mouse.x - 6;
+			}
+		}
+
+		if (movingCorner == 2) {
+			if (mouse.y - corners[0].inicialY > 30) {
+				figures[selectedFigure].height = mouse.y - corners[0].inicialY;
+				corners[2].inicialY = mouse.y;
+				corners[1].y = mouse.y - (figures[selectedFigure].height / 2);
+				corners[3].y = mouse.y - (figures[selectedFigure].height / 2);
+				corners[2].y = mouse.y + 6;
+			}
+		}
+
+		if (movingCorner == 3) {
+			if (mouse.x - corners[1].inicialX > 30) {
+				figures[selectedFigure].width = mouse.x - corners[1].inicialX;
+				corners[3].inicialX = mouse.x;
+				corners[0].x = mouse.x - (figures[selectedFigure].width / 2);
+				corners[2].x = mouse.x - (figures[selectedFigure].width / 2);
+				corners[3].x = mouse.x + 6;
+			}
+		}
+
+	}
+
+	function Figure(x, y, width, height, color, velocity) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.inicialX = x;
+		this.inicialY = y;
+		this.color = color;
+		this.velocity = velocity;
+		this.velocityX = 0;
+		this.velocityY = 0;
+	}
+
+	Figure.prototype.in = function (x, y) {
+		return ((x >= this.x) && (x <= this.x + this.width) && (y >= this.y) && (y <= this.y + this.height));
+	}
+
+	Figure.prototype.update = function () {
+		if ((Math.abs(this.x - this.inicialX) < this.velocity) && (Math.abs(this.y - this.inicialY) < this.velocity)) {
+			this.velocityX = 0;
+			this.velocityY = 0;
+			this.x = this.inicialX;
+			this.y = this.inicialY;
+		}
+		else {
+			this.x += this.velocityX;
+			this.y += this.velocityY;
+		}
+	}
+
+	Figure.prototype.draw = function (context) {
+		context.fillStyle = this.color;
+		context.fillRect(this.x, this.y, this.width, this.height);
+	}
+
+	let figures = [new Figure(10, 10, 100, 100, "rgb(255,0,0)", 5), new Figure(200, 200, 100, 100, "rgb(0,255,0)", 30)];
+	let movingFigure = -1;
+	let selectedFigure = -1;
+	let corners = [];
+	let movingCorner = -1;
+
+	function loop() {
+		context.fillStyle = "rgb(0,0,0)";
+		context.fillRect(0, 0, 800, 600);
+
+		for (let figure = 0; figure < figures.length; figure++) {
+			figures[figure].update();
+			figures[figure].draw(context);
+
+			if (figure == selectedFigure) {
+				context.strokeStyle = "rgb(0,0,255)";
+				context.strokeRect(figures[figure].x - 5, figures[figure].y - 5, figures[figure].width + 10, figures[figure].height + 10);
+				corners[0].draw(context);
+				corners[1].draw(context);
+				corners[2].draw(context);
+				corners[3].draw(context);
+			}
+		}
+	}
+
+	let timer = setInterval(loop, 1000 / fps);
+
+	document.addEventListener('keypress', onKeyPress);
+
+	function onKeyPress(event) {
+		clearInterval(timer);
+	}
+</script>
+
+</html>

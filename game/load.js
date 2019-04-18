@@ -38,7 +38,7 @@ function renderElements(stage, typeBox, coords = null) {
   stage.addShape(box);
 }
 
-let stage = new Stage(document.querySelector("canvas"));
+let stage = new Stage(document.querySelector("canvas"), 1);
 document.querySelector(".newBox").addEventListener("click", function () {
   let typeBox = document.querySelector(".typeBox").value;
   renderElements(stage, typeBox);
@@ -49,9 +49,8 @@ let text = document.querySelector(".btn-text");
 text.addEventListener("click", function () {
   let textValue = document.querySelector(".text-input").value;
   let id = createId();
-  if (document.querySelector(".fract").checked) fract = true;
-  let textClone = new Shape(Math.random() * 800, Math.random() * 600, 100, 100, 1, true, true, 10, id + 1, 
-    null, null, { value: textValue, tam: "40px Calibri", fill: 'black' });
+  let textClone = new Shape(Math.random() * 800, Math.random() * 600, 100 + (10*textValue.length), 100, 1, true, true, 10, null, id, 
+    null, null, { value: textValue, tam: 40, fill: 'black' });
   stage.addShape(textClone);
 });
 

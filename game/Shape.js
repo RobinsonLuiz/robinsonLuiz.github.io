@@ -14,39 +14,15 @@ class Shape {
     this.clickable = clickable; //clicável
     this.visible = visible; //visível
     this.used = false; //encaixado
-    this.velocity = 0;
+    this.velocity = velocity;
     this.velocityX = 0;
     this.velocityY = 0;
     this.matchId = [matchId];
     this.text = text;
-    this.textcolor = "black";
     if (src) {
       this.img = new Image();
       this.img.src = src;
-    }
-    //script dos eventos
-    //TocarSom()
-    //MostrarFigura(shape)
-    //VaiParaInicio()
-    //VaiParaFaseAnterior()
-    //VaiParaProximaFase()
-    //VaiParaFaseN()
-    //Termina()
-
-    //shape eventos
-    //quandoClicar()
-    //quandoSoltar()
-    //quandoAcertar()
-    //quandoErrar()
-
-
-    //eventos cenário
-    //quandoClicar()
-    //quandoIniciar()
-    //quandoTerminar()
-
-
-    
+    }   
   }
 
   /**
@@ -78,8 +54,9 @@ class Shape {
     }
     if (this.text) {
       ctx.fillStyle = this.text.fill; //TODO PAINEL PARA ADMINISTRAÇÃO DAS CORES
-      ctx.font = "40px Calibri"; //Fonte Calibri estatico, Dinamico
-      ctx.fillText(this.text.value, this.x + (this.width / 2) - 20, this.y + (this.height / 2) + 20);
+      ctx.font = `${this.text.tam}px Calibri`; //Fonte Calibri estatico, Dinamico
+      this.font += 1;
+      ctx.fillText(this.text.value, this.x + (this.width / 2) - (10 * this.text.value.length), this.y + (this.height / 2) + 10);
     }
     // this.transform(ctx);
   }

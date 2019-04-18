@@ -7,18 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/v4-shims.css" />
-  <link rel="stylesheet" href="./utils/css/painel.css" />
-  <link rel="stylesheet" href="./utils/css/figures.css" />
-  <script src="./utils/jquery.js"></script>
-  <script src="./utils/js/painel.js"></script>
   <title>ABC Construção - Painel Administrativo</title>
 </head>
 
 <body>
-  <div class="img-off">
-    <img src="./game/imgs/casa.png" style="filter:brightness(0%)" width="200" height="100" hidden>
-    <img src="./game/imgs/elefante.png" hidden>
-  </div>
   <div class="page-wrapper chiller-theme toggled" style="max-height: 600px">
     <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
       <i class="fa fa-bars"></i>
@@ -41,11 +33,6 @@
           </div> -->
       <select class="typeBox">
         <option value="rectangle"> Retangulo </option>
-        <option value="circle"> Circulo </option>
-        <option value="triangle"> Triangulo </option>
-        <option value="pentagono"> Petangono </option>
-        <option value="hexagono"> Hexagono </option>
-        <option value="quadrilatero"> Quadrilátero </option>
       </select>
       <select class="velocidades">
         <option value="lenta"> Lenta </option>
@@ -55,7 +42,6 @@
       </select>
       <input type="text" class="text-input" />
       <button class="btn-text">Atribuir Texto</button>
-      <input type="checkbox" value="fract" class="fract" /> Fracionar
       <div>
         <div style="display: inline-flex">
           <div><input type="file" name="image_file" id="image_file" /></div>
@@ -127,19 +113,10 @@
   integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
   integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="./game/Mouse.js"></script>
 <script src="./game/Stage.js"></script>
 <script src="./game/Shape.js"></script>
-<script src="./game/Text.js"></script>
-<script src="./game/ImageC.js"></script>
 <script src="./game/load.js"></script>
 <script src="./game/liveMode.js"></script>
-<script>
-</script>
-<script>
-  document.querySelector('body').addEventListener('touchmove', function (e) {
-    alert("Touches -> " + e.originalEvent.touches[0]);
-    alert("Other -> " + e.originalEvent.changedTouches[0]);
-  })
-</script>
 
 </html>
