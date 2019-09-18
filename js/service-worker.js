@@ -12,7 +12,10 @@ this.addEventListener('install', function (event) {
         .then(function (cache) {
             return cache.addAll([
                 '../js/service-worker.js',
-                '../manifest.json'
+                '../manifest.json',
+                '../index.html',
+                '../canvas.html',
+                '../jogos.html'
             ]);
         })
     );
