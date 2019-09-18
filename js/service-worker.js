@@ -1,6 +1,6 @@
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js')
+    navigator.serviceWorker.register('../js/service-worker.js')
     .then(() => {console.log('service worker registered')})
     .catch(() => {console.warn('service worker failed') })
 }
@@ -11,7 +11,7 @@ this.addEventListener('install', function (event) {
     event.waitUntil(caches.open(CACHE_NAME)
         .then(function (cache) {
             return cache.addAll([
-                './service-worker.js',
+                '../js/service-worker.js',
                 '../manifest.json'
             ]);
         })
