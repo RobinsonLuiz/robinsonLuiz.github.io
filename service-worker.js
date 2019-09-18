@@ -1,15 +1,8 @@
-
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('../js/service-worker.js')
-    .then(() => {console.log('service worker registered')})
-    .catch(() => {console.warn('service worker failed') })
-}
-
 this.addEventListener('install', function (event) {
     console.log('[Service Worker] Installing Service Worker ...', event);
     event.waitUntil(
         caches.open('static').then(function (cache) {
-            cache.addAll(['/', '/index.html', '/canvas.html', '/jogos.html', '/manifest.json']);
+            cache.addAll(['/', '/app.js', '/index.html', '/canvas.html', '/jogos.html', '/manifest.json']);
         })
     );
 });
