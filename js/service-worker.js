@@ -5,40 +5,32 @@ if ('serviceWorker' in navigator) {
     .catch(() => {console.warn('service worker failed') })
 }
 
-
-var CACHE_NAME = 'static-v1';
 this.addEventListener('install', function (event) {
-    event.waitUntil(caches.open(CACHE_NAME)
-        .then(function (cache) {
-            return cache.addAll([
-                '../js/service-worker.js',
-                '../manifest.json',
-                '../index.html',
-                '../canvas.html',
-                '../jogos.html'
-            ]);
-        })
-    );
-})
- 
-
-this.addEventListener('activate', function activator(event) {
-    event.waitUntil(caches.keys()
-        .then(function (keys) {
-            return Promise.all(keys.filter(function (key) {
-                return key.indexOf(CACHE_NAME) !== 0}).map(function (key) {
-                    return caches.delete(key);
-                })
-            );
+    console.log('[Service Worker] Installing Service Worker ...', event);
+    event.waitUntil(
+        caches.open('static').then(function (cache) {
+            cache.addAll(['/', '/index.html', '/canvas.html', '/jogos.html', '/manifest.json']);
         })
     );
 });
 
+this.addEventListener('activate', function (event) {
+    console.log('[Service Worker] Activating Service Worker ....', event);
+});
 
 this.addEventListener('fetch', function (event) {
     event.respondWith(
-        caches.match(event.request).then(function (cachedResponse) {
-            return cachedResponse || fetch(event.request);
+        caches.match(event.request).then(function (response) {
+            if (response) {
+                return response;
+            } else {
+                return fetch(event.request).then(function (res) {
+                    return caches.open('dynamic').then(function (cache) {
+                        cache.put(event.request.url, res.clone());
+                        return res;
+                    });
+                });
+            }
         })
     );
 });
