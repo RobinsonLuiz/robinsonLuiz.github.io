@@ -1,0 +1,224 @@
+.canvas-container {
+    position: relative;
+    max-width: 1024px;
+    min-width: 320px;
+    display: flex;
+}
+
+canvas {
+    border: 1px solid black;
+}
+
+#clicavel {
+    margin-top: 3px
+}
+
+.cenarios {
+    cursor: pointer;
+}
+
+.introjs-fixParent {
+    position: absolute;
+}
+
+.btn-add-script {
+    width: 60%
+}
+
+
+.btn-del-script-scene {
+    width: 60%;
+    margin-top: 20%
+}
+
+.btn-del-script-figura {
+    width: 60%;
+    margin-top: 20%
+}
+
+.h5-scripts {
+    width: 39%
+}
+
+.div-scripts {
+    margin-top: 20px
+}
+
+.tutorial {
+    cursor: pointer;
+    color: #818896;
+}
+
+.tutorial:hover {
+    color: #16c7ff;
+}
+
+#bordas {
+    margin-top: 3px;
+}
+
+.clicavel-bordas {
+    width: 120%
+}
+
+.canvas-container-desenho {
+    position: relative;
+    display: flex;
+}
+
+.scripts-scene {
+    margin-top: 35px;
+}
+
+.btn-group {
+    margin-top: 10px;
+    padding: 10px 0px;
+}
+
+.btn-principal-scene {
+    margin-right: 10px;
+}
+
+.audioStage {
+    margin-top: 100px;
+}
+
+
+.erase:hover {
+    color: red;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+#opacidade {
+    margin-top: 5px;
+}
+
+#fracionado {
+    width: 9%;
+    margin-top: 10px
+}
+
+h5 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+
+
+/* This is copied from https://github.com/blueimp/jQuery-File-Upload/blob/master/css/jquery.fileupload.css */
+
+.fileinput-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.input-tamanho h5 {
+    margin-top: 4px;
+}
+
+/*Also*/
+
+.fileinput-button input {
+    position: absolute;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.iniciar-plataforma {
+    margin-left: 35%;
+}
+
+@media (min-width: 1220px) and (max-width: 1700px) {
+    .canvas-container {
+        width: 55%;
+    }
+    .col-sm-5 {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1701px) {
+    .canvas-container {
+        max-width: 1024px;
+    }
+    .col-sm-5 {
+        width: 100%;
+    }
+}
+
+@media (min-width: 100px) and (max-width: 1219px) {
+    .canvas-container {
+        display: block;
+        width: 100%;
+    }
+    .col-sm-5 {
+        width: 100%;
+    }
+}
+
+.input-posicao h5 {
+    margin-top: -5px;
+}
+
+#fotoCanvas {
+    width: 100%;
+}
+
+.velocidades {
+    margin-top: 10px
+}
+
+.scenes {
+    border: 1px solid rgb(167, 167, 167);
+    max-width: 100%
+}
+
+.painel {
+    border: 1px solid rgb(167, 167, 167);
+    max-width: 100%
+}
+
+#canvas {
+    width: 100%;
+    height: auto;
+    background-color: white;
+    border: 1px solid black;
+    z-index: 0;
+}
+
+#figures {
+    width: 100%;
+    height: 70px;
+    border: 1px solid #aaaaaa;
+}
+
+.erase {
+    cursor: pointer
+}

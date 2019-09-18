@@ -1,0 +1,48 @@
+footer {
+    width: 100%;
+}
+
+.container-fluid {
+    margin-top: 30px;
+    display: inline-block;
+    text-align: center;
+}
+
+.edit {
+    font-size: 30px;
+    color: blue
+}
+
+.delete {
+    font-size: 30px;
+    color: red
+}
+
+.card-aluno {
+    position: relative;
+    margin-left: 20px;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    overflow-x: auto;
+}
+
+.card img {
+    height: 70%;
+}
+
+.buttons-edit {
+    margin-top: -10px;
+}
+
+.img-aluno {
+    width: 30%;
+}
+
+.imgGame {
+    width: 100%;
+}
+
+section {
+    margin-bottom: 100px;
+}
