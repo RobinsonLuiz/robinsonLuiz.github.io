@@ -1,112 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body, html {
+        height: 100%;
+        margin: 0;
+        }
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>SpaceTEA - Plataforma Assistiva</title>
-    <link href="./vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="./vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="./css/creative.min.css" rel="stylesheet">
-    <link rel="icon" href="./images/icons/icone.ico" />
-    <link href="./css/index.css" rel="stylesheet">
-    <link rel="manifest" href="./manifest.json">
+        .bg {
+        /* The image used */
+        background-image: url("http://s2.glbimg.com/60nC8Sy_jjyu1TSWu_ktZ5QuXtw=/0x0:778x363/695x324/s.glbimg.com/po/tt2/f/original/2014/05/27/screen_shot_2014-05-27_at_6.18.06_pm.png");
 
+        /* Full height */
+        height: 100%; 
+
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        }
+    </style>
 </head>
+<body>
 
-<body id="page-top">
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand" href="#page-top">SpaceTEA</a>
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link login" data-toggle="modal" data-target="#loginModal" href="">Entrar</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <header class="masthead text-center text-white d-flex">
-        <div class="container my-auto">
-            <div class="row">
-                <div class="col-lg-10 mx-auto">
-                    <h1 class="text-uppercase">
-                        <strong>PlayTEA</strong>
-                    </h1>
-                    <hr>
-                </div>
-                <div class="col-lg-8 mx-auto">
-                    <p class="text-faded mb-5">Viabilizando facilitar a inclusão dentro dos espaços de aprendizagem. </p>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <aside role="complementary">
-        <div class="modal fade" id="loginModal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title" role="heading">Logar</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-header success-login" hidden>
-                        <h4 class="modal-title" role="heading">Realizado com Sucesso!</h4>
-                        <button type="button" class="close close-success-login" data-dismiss="success">&times;</button>
-                    </div>
-                    <div class="modal-header error-login" hidden>
-                        <h4 class="modal-title" role="heading">Email e/ou senha errados!</h4>
-                        <button type="button" class="close close-error-login" data-dismiss="error">&times;</button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <form name="login">
-                            <div class="form-group">
-                                <legend>
-                                    <label for="email">Usuário:</label>
-                                </legend>
-                                <input type="text" id="user" name="user" class="color-btn control" placeholder="Digite seu usuário">
-                            </div>
-                            <div class="form-group">
-                                <legend>
-                                    <label for="nome">Senha:</label>
-                                </legend>
-                                <input type="password" id="password" name="password" class="color-btn control" placeholder="Digite sua senha">
-                            </div>
-                            <div class="modal-footer" role="complementary">
-                                <button type="submit" class="btn btn-primary btn-modal-login" id="login" disabled>Entrar</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- Modal footer -->
-
-
-                </div>
-            </div>
-        </div>
-    </aside>
-    <!-- Bootstrap core JavaScript -->
+<div class="bg"></div>
 </body>
 <script src="./vendor/jquery/jquery.min.js"></script>
-<script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="./js/browser-image-compression.js"></script>
-<script src="./js/validator.js"></script>
-<script src="./js/constants.js"></script>
-<script src="./js/validar-form-login.js"></script>
-<script src="./app.js"></script>
-<script src="./service-worker.js"></script>
-<script src="./js/login.js"></script>
-<script src="./js/showPhoto.js"></script>
-<script src="./js/indexedDB.js"></script>
-
+<script src="./js/splashscreen.js"></script>
 </html>
