@@ -16,8 +16,9 @@ class Mouse {
                     my += canvasOpt.offsetTop;
                 } while ((canvasOpt = canvasOpt.offsetParent));
             }
-            this.x = event.pageX - mx;
-            this.y = event.pageY - my;
+            console.log(event.touches.length);
+            this.x = (event.touches.length ? event.touches[0].pageX : event.pageX) - mx;
+            this.y = (event.touches.length ? event.touches[0].pageY : event.pageY) - my;
             return this;
         }
     }

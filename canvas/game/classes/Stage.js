@@ -63,7 +63,7 @@ class Stage {
     }
 
     click() {
-        $(this.canvas).on("mousedown", e => {
+        $(this.canvas).on("mousedown touchstart", e => {
             e.preventDefault();
             if (this.currentStage) {
                 let mouse = this.mouse.getPosition(this, e);
@@ -125,7 +125,7 @@ class Stage {
     }
 
     moving() {
-        $(document).on("mousemove", e => {
+        $(document).on("mousemove touchmove", e => {
             if (this.currentStage) {
                 let mouse = this.mouse.getPosition(this, e);
                 if (this.dragging && this.shapes[this.shapeSelected] && this.shapes[this.shapeSelected].clickable) {
