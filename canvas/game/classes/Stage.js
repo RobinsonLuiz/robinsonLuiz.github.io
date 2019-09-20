@@ -174,7 +174,7 @@ class Stage {
                                     shapeSelected.y = clone.y;
                                     shapeSelected.width = clone.width;
                                     shapeSelected.height = clone.height;
-                                    shapeSelected.matchId = clone.matchId;
+                                    // shapeSelected.matchId = clone.matchId;
                                     // shapeSelected.id = clone.id;
                                     // shapeSelected.clickable = false;
                                     // this.executeSound(shapeSelected.sons.acertou); //todo sons da imagem efeito de erro do objeto
