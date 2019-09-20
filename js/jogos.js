@@ -27,7 +27,7 @@ $(document).ready(() => {
                 }
             },
             error: function (err) {
-                console.log(err);
+                openDataBase().then((db) => carregarJogosDb(db, containerFluid));
                 $(containerFluid).append("Ops, tivemos algum erro de comunicação com o servidor");
                 $(loader).attr('hidden', true);
             }
