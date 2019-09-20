@@ -2,111 +2,117 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>SpaceTEA - Plataforma Assistiva</title>
+    <meta name="description" content="SpaceTEA - Plataforma para construção de jogos">
+    <meta name="author" content="Robinson Luiz">
+    <title>SpaceTEA - Painel de controle</title>
+    <link rel="stylesheet" href="./css/bootstrap-select.min.css">
     <link href="./vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="./vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="./css/creative.min.css" rel="stylesheet">
-    <link rel="icon" href="./images/icons/icone.ico" />
-    <link href="./css/index.css" rel="stylesheet">
-    <link rel="manifest" href="./manifest.json">
-
+    <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <script src="./css/icons.js"> </script>
+    <link rel="stylesheet" href="./css/autocomplete.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/canvas.css">
+    <link href="./css/sb-admin.css" rel="stylesheet">
+    <link rel='stylesheet' href='./css/spectrum.css' />
+    <link rel="stylesheet" href="./css/painel-canvas.css">
+    <link rel="stylesheet" href="./css/fontawesomeall.css">
+    <link rel="stylesheet" href="./css/fontawesomev4.css">
+    <link rel="stylesheet" href="./css/introjs-rtl.min.css">
+    <link rel="stylesheet" href="./css/introjs.min.css">
 </head>
 
 <body id="page-top">
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand" href="#page-top">SpaceTEA</a>
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link login" data-toggle="modal" data-target="#loginModal" href="">Entrar</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <header class="masthead text-center text-white d-flex">
-        <div class="container my-auto">
-            <div class="row">
-                <div class="col-lg-10 mx-auto">
-                    <h1 class="text-uppercase">
-                        <strong>PlayTEA</strong>
-                    </h1>
-                    <hr>
-                </div>
-                <div class="col-lg-8 mx-auto">
-                    <p class="text-faded mb-5">Viabilizando facilitar a inclusão dentro dos espaços de aprendizagem. </p>
+    <div id="wrapper">
+        <!-- Sidebar -->
+
+        <aside role="complementary">
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Tem certeza que deseja sair?</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Clicando em "Sair" você sairá da sessão.</div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                            <a class="btn btn-primary btn-sair" href="index.html">Sair</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </aside>
 
-    <aside role="complementary">
-        <div class="modal fade" id="loginModal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
 
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title" role="heading">Logar</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-header success-login" hidden>
-                        <h4 class="modal-title" role="heading">Realizado com Sucesso!</h4>
-                        <button type="button" class="close close-success-login" data-dismiss="success">&times;</button>
-                    </div>
-                    <div class="modal-header error-login" hidden>
-                        <h4 class="modal-title" role="heading">Email e/ou senha errados!</h4>
-                        <button type="button" class="close close-error-login" data-dismiss="error">&times;</button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <form name="login">
-                            <div class="form-group">
-                                <legend>
-                                    <label for="email">Usuário:</label>
-                                </legend>
-                                <input type="text" id="user" name="user" class="color-btn control" placeholder="Digite seu usuário">
+        <aside role="complementary">
+            <div class="modal fade" id="iniciarJogo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header flex-column">
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <h5 class="modal-title text-center w-100 md-3">Obrigado por utilizar SpaceTEA</h5>
+                            <div class="alert alert-warning text-justify">
+                                <strong>Atenção!</strong> Este é um prototipo da ferramenta SpaceTEA, pedimos desculpa
+                                caso encontre alguma anormalidade.
                             </div>
-                            <div class="form-group">
-                                <legend>
-                                    <label for="nome">Senha:</label>
-                                </legend>
-                                <input type="password" id="password" name="password" class="color-btn control" placeholder="Digite sua senha">
-                            </div>
-                            <div class="modal-footer" role="complementary">
-                                <button type="submit" class="btn btn-primary btn-modal-login" id="login" disabled>Entrar</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                            </div>
-                        </form>
+                        </div>
+                        <div class="modal-body iniciar-plataforma">
+                            <a href="jogos.html">
+                                <button class="btn btn-secondary" type="button">Sair</button>
+                            </a>
+                            <button class="btn btn-primary btn-start" data-dismiss="modal">Iniciar</button>
+                        </div>
                     </div>
-
-                    <!-- Modal footer -->
-
-
                 </div>
             </div>
-        </div>
-    </aside>
-    <!-- Bootstrap core JavaScript -->
+        </aside>
+
+        <div id="content-wrapper">
+
+            <div class="container-fluid">
+                <div class="page-wrapper chiller-theme toggled">
+                    <div>
+                        <div class="canvas-container">
+                            <canvas width="1024" height="800"></canvas>
+                        </div>
+
+                        <footer class="sticky-footer">
+                            <div class="container my-auto">
+                                <div class="copyright text-center my-auto">
+                                    <span>Copyright © SpaceTEA 2019</span>
+                                </div>
+                            </div>
+                        </footer>
+
+                    </div>
+                </div>
+                <script src="./vendor/jquery/jquery.min.js"></script>
+                <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                <script src="./js/bootstrap-select.min.js"></script>
+                <script src="./js/utils.js"></script>
+                <script src="./js/constants.js"></script>
+                <script src="./canvas/index.js"></script>
+                <script src="./js/showPhoto.js"></script>
+                <script src="./js/indexedDB.js"></script>
+                <script src="./canvas/game/classes/Game.js"></script>
+                <script src="./canvas/game/classes/Mouse.js"></script>
+                <script src="./canvas/game/classes/Stage.js"></script>
+                <script src="./canvas/game/classes/Shape.js"></script>
+                <script src="./canvas/game/load.js"></script>
+                <script src="./canvas/game/liveMode.js"></script>
+                <script src="./js/playSound.js"></script>
+                <script src="./js/matches.js"></script>
+                <script src="./js/interpretador.js"></script>
 </body>
-<script src="./vendor/jquery/jquery.min.js"></script>
-<script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="./js/browser-image-compression.js"></script>
-<script src="./js/validator.js"></script>
-<script src="./js/constants.js"></script>
-<script src="./js/validar-form-login.js"></script>
-<script src="./app.js"></script>
-<script src="./service-worker.js"></script>
-<script src="./js/login.js"></script>
-<script src="./js/showPhoto.js"></script>
-<script src="./js/indexedDB.js"></script>
 
 </html>
