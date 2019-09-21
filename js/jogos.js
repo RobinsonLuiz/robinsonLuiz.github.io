@@ -105,7 +105,13 @@ function addJogo(db, jogo) {
                 alert('Erro ao criar o jogo ');
             }
         } else {
-            store.put({ 'id': jogo.codigo, 'jogo': jogo.json });
+            store.put({
+                'id': jogo.codigo,
+                'jogo': jogo.json,
+                'aluno': localStorage.getItem('alunoCodigo'),
+                'nome': jogo.nome,
+                'foto': jogo.foto
+            });
         }
     }
 }
