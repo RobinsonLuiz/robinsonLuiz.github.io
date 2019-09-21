@@ -2,7 +2,7 @@ this.addEventListener('install', function (event) {
     console.log('[Service Worker] Installing Service Worker ...', event);
     event.waitUntil(
         caches.open('static').then(function (cache) {
-            cache.addAll(['/', '/app.js', '/index.html', '/canvas.html', '/jogos.html', '/manifest.json']);
+            cache.addAll(['/app.js', '/index.html', '/canvas.html', '/manifest.json']);
         })
     );
 });
