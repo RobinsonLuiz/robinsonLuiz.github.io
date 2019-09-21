@@ -6,7 +6,7 @@ class Stage {
         this.canvas = canvas;
         this.mouse = new Mouse();
         this.width = $(window).width() - 20;
-        this.height = $(window).height() - 100;
+        this.height = $(window).height();
         this.context = canvas.getContext("2d");
         canvas.width = this.width;
         canvas.height = this.height;
