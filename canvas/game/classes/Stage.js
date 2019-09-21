@@ -14,6 +14,7 @@ class Stage {
         this.shapes = shapes;
         this.countIds = countIds;
         this.ids = ids;
+        this.executingScript = false;
         this.name = '';
         this.fps = 30;
         this.looping = null;
@@ -79,6 +80,12 @@ class Stage {
                     }
                     this.shapeSelected = -1;
                 }
+                if (this.shapes[this.shapeSelected]) {
+                    let quandoClicar = Object.keys(this.shapes[this.shapeSelected].quandoClicar);
+                    if (quandoClicar.length) {
+                        this.playScript(quandoClicar, this.shapes[this.shapeSelected].quandoClicar);
+                    }
+                }
                 if (movingCorner == -1 && this.shapeSelected != -1) {
                     this.dragging = true;
                     return;
@@ -89,6 +96,10 @@ class Stage {
                 }
             }
         });
+    }
+
+    sleep(timer) {
+        return new Promise((resolve, reject) => setTimeout(() => resolve(timer), timer));
     }
 
     addShape(shape) {
@@ -102,11 +113,15 @@ class Stage {
     }
 
     loadAudio(som) {
-        let sound = new Audio();
-        sound.src = som;
-        sound.controls = false;
-        sound.load();
-        sound.play().then(() => {})
+        return new Promise((resolve, reject) => {
+            let sound = new Audio();
+            sound.src = som;
+            sound.controls = false;
+            sound.load();
+            sound.play().then(() => {})
+            sound.onended = () => resolve();
+            sound.onerror = () => reject();
+        })
     }
 
 
@@ -156,12 +171,43 @@ class Stage {
         } else return (Math.abs(catX) < halfWidth && Math.abs(catY) < halfHeight);
     }
 
+    async playScript(type, script, proccess=false) {
+        if (!this.executingScript || proccess) {
+            let shape = JSON.parse(JSON.stringify(this.shapes[this.shapeSelected]));
+            for(let i = 0; i < type.length; i++) {
+                this.executingScript = true;
+                switch (script[type[i]].type) {
+                    case "image":
+                        if (!this.shapes[this.shapeSelected].img) this.shapes[this.shapeSelected].img = new Image();
+                        this.shapes[this.shapeSelected].img.src = script[type[i]].value;
+                        break;
+                    case "sound":
+                        await this.loadAudio(script[type[i]].value);
+                        break;
+                    case "end":
+                        //executeQuandoTerminar;
+                        window.location.assign('./jogos.html');
+                        break;
+                    case "next":
+                        break;
+                    case "previous":
+                        break;
+                }
+                await this.sleep(1000);
+            }
+
+            for(let i = 0; i < this.shapes.length; i++) {
+                if (this.shapes[i].id == shape.id) this.shapes[i].img = null;
+            }
+            this.executingScript = false;
+        }
+    }
+
 
     drop() {
         $(document).on("mouseup touchend", e => {
             let shapeSelected = this.shapes[this.shapeSelected];
             if (this.currentStage) {
-                this.dragging = false;
                 if (this.liveMode && this.shapes[this.shapeSelected] && this.shapes[this.shapeSelected].clickable) {
                     if (this.shapes[this.shapeSelected].matchId.length) {
                         for (let i = 0; i < this.shapes[this.shapeSelected].matchId.length; i++) {
@@ -170,18 +216,18 @@ class Stage {
                             if (clone) {
                                 if (this.collision(shapeSelected, clone, shapeSelected.dificult) || this.collision(clone, shapeSelected, shapeSelected.dificult)) {
                                     this.shapes = this.shapes.filter(e => e != clone);
+                                    let quandoAcertar = Object.keys(this.shapes[this.shapeSelected].quandoAcertar);
+                                    if (quandoAcertar.length) this.playScript(quandoAcertar, this.shapes[this.shapeSelected].quandoAcertar, true);
+                                    this.shapes[this.shapeSelected].quandoErrar = {};
                                     shapeSelected.x = clone.x;
                                     shapeSelected.y = clone.y;
                                     shapeSelected.width = clone.width;
                                     shapeSelected.height = clone.height;
-                                    // shapeSelected.matchId = clone.matchId;
-                                    // shapeSelected.id = clone.id;
-                                    // shapeSelected.clickable = false;
-                                    // this.executeSound(shapeSelected.sons.acertou); //todo sons da imagem efeito de erro do objeto
-                                    // shapeSelected.modify = false;
                                     this.toJSON["Stage"] = this.shapes;
                                     break;
                                 } else {
+                                    let quandoErrar = Object.keys(this.shapes[this.shapeSelected].quandoErrar);
+                                    if (quandoErrar.length) this.playScript(quandoErrar, this.shapes[this.shapeSelected].quandoErrar, this.dragging);
                                     let angle = Math.atan2(shapeSelected.posInitialY -
                                         shapeSelected.y, shapeSelected.posInitialX -
                                         shapeSelected.x);
@@ -192,9 +238,10 @@ class Stage {
                                         shapeSelected.x = shapeSelected.posInitialX;
                                         shapeSelected.y = shapeSelected.posInitialY;
                                     }
-                                    // this.executeSound(this.shapeSelected.sons.errou); //todo sons da imagem efeito de erro do objeto
                                 }
                             } else {
+                                let quandoErrar = Object.keys(this.shapes[this.shapeSelected].quandoErrar);
+                                if (quandoErrar.length) this.playScript(quandoErrar, this.shapes[this.shapeSelected].quandoErrar, this.dragging);
                                 let angle = Math.atan2(shapeSelected.posInitialY -
                                     shapeSelected.y, shapeSelected.posInitialX -
                                     shapeSelected.x);
@@ -220,6 +267,7 @@ class Stage {
                         } 
                     }   
                 }
+                this.dragging = false;
             }
         });
     }

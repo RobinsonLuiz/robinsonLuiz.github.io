@@ -99,7 +99,7 @@ class Shape {
                 ctx.lineWidth = 2;
                 ctx.strokeRect(this.x, this.y, this.width, this.height);
             }
-            if (this.img) {
+            if (this.img && this.img.src) {
                 ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
                 ctx.save();
             }

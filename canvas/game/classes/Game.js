@@ -38,7 +38,7 @@ class Game {
             construct.forEach((stageConstruct, index) => {
                 let staging = new Stage(document.querySelector('canvas'), ++index, stageConstruct.ids, stageConstruct.countIds);
                 stageConstruct.shapes.forEach((shape) => {
-                    let newShape = new Shape(shape.x, shape.y, shape.width, shape.height, shape.zIndex, shape.clickable, shape.visible, shape.velocity, shape.backGroundColor, shape.id, shape.matchId, shape.image64, shape.text, shape.opacity, shape.primarySound, shape.bordas, shape.dificult);
+                    let newShape = new Shape(shape.x, shape.y, shape.width, shape.height, shape.zIndex, shape.clickable, shape.visible, shape.velocity, shape.backGroundColor, shape.id, shape.matchId, shape.image64, shape.text, shape.opacity, shape.primarySound, shape.bordas, shape.dificult, shape.quandoClicar, shape.quandoAcertar, shape.quandoErrar);
                     staging.addShape(newShape);
                 })
                 staging.setName(stageConstruct.name);
