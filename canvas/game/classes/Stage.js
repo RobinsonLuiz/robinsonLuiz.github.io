@@ -208,65 +208,66 @@ class Stage {
     }
 
     async playScript(type, script, proccess = false, shapeSelected = null, scene) {
-        if (!this.executingScript || proccess) {
-            // let shape = JSON.parse(JSON.stringify(shapeSelected || this.shapes[this.shapeSelected]));
-            let currentShape = shapeSelected || this.shapes[this.shapeSelected];
-            for (let i = 0; i < type.length; i++) {
-                this.executingScript = true;
-                switch (script[type[i]].type) {
-                    case "image":
-                        if (!currentShape.img) currentShape.img = new Image();
-                        currentShape.img.src = script[type[i]].value;
-                        break;
-                    case "sound":
-                        await this.loadAudio(script[type[i]].value);
-                        break;
-                    case "end":
+        let currentShape = shapeSelected || this.shapes[this.shapeSelected];
+        let shapeVerify;
+        try {
+            shapeVerify = JSON.parse(JSON.stringify(shapeSelected || this.shapes[this.shapeSelected]));
+            console.log(currentShape);
+        } catch (err) {}
+        for (let i = 0; i < type.length; i++) {
+            switch (script[type[i]].type) {
+                case "image":
+                    if (!currentShape.img) currentShape.img = new Image();
+                    currentShape.img.src = script[type[i]].value;
+                    break;
+                case "sound":
+                    await this.loadAudio(script[type[i]].value);
+                    break;
+                case "end":
+                    let quandoTerminar = Object.keys(this.quandoTerminar);
+                    if (quandoTerminar.length) return this.playScriptTerminar(0);
+                    window.location.assign('./jogos.html');
+                    break;
+                case "next":
+                    let fase = game.getStages().find((stage) => stage.id == game.getCurrentStage().id + 1);
+                    if (fase) {
                         let quandoTerminar = Object.keys(this.quandoTerminar);
-                        if (quandoTerminar.length) return this.playScriptTerminar(0);
-                        window.location.assign('./jogos.html');
-                        break;
-                    case "next":
-                        let fase = game.getStages().find((stage) => stage.id == game.getCurrentStage().id + 1);
-                        if (fase) {
-                            let quandoTerminar = Object.keys(this.quandoTerminar);
-                            if (quandoTerminar.length) return this.playScriptTerminar(1);
-                            game.currentStage.pauseScene();
-                            game.getCurrentStage.shapeSelected = -1;
-                            fase.start();
-                            game.setCurrentStage(fase);
-                        } else alert("NÃO POSSUI PROXIMO CENÁRIO");
-                        break;
-                    case "previous":
-                        let ant = game.getStages().find((stage) => stage.id == game.getCurrentStage().id - 1);
-                        if (ant) {
-                            let quandoTerminar = Object.keys(this.quandoTerminar);
-                            if (quandoTerminar.length) return this.playScriptTerminar(-1);
-                            game.currentStage.pauseScene();
-                            game.getCurrentStage.shapeSelected = -1;
-                            ant.start();
-                            game.setCurrentStage(ant);
-                        } else alert("NÃO POSSUI PROXIMO CENÁRIO");
-                        break;
-                    case "specify":
-                        let specify = game.getStages().find((stage) => stage.id == script[type[i]].value);
-                        if (specify) {
-                            let quandoTerminar = Object.keys(this.quandoTerminar);
-                            if (quandoTerminar.length) return this.playScriptTerminar(script[type[i]].value);
-                            game.currentStage.pauseScene();
-                            game.getCurrentStage.shapeSelected = -1;
-                            specify.start();
-                            game.setCurrentStage(specify);
-                        }
-                        break;
-                }
-                await this.sleep(1000);
+                        if (quandoTerminar.length) return this.playScriptTerminar(1);
+                        game.currentStage.pauseScene();
+                        game.getCurrentStage.shapeSelected = -1;
+                        fase.start();
+                        game.setCurrentStage(fase);
+                    } else alert("NÃO POSSUI PROXIMO CENÁRIO");
+                    break;
+                case "previous":
+                    let ant = game.getStages().find((stage) => stage.id == game.getCurrentStage().id - 1);
+                    if (ant) {
+                        let quandoTerminar = Object.keys(this.quandoTerminar);
+                        if (quandoTerminar.length) return this.playScriptTerminar(-1);
+                        game.currentStage.pauseScene();
+                        game.getCurrentStage.shapeSelected = -1;
+                        ant.start();
+                        game.setCurrentStage(ant);
+                    } else alert("NÃO POSSUI PROXIMO CENÁRIO");
+                    break;
+                case "specify":
+                    let specify = game.getStages().find((stage) => stage.id == script[type[i]].value);
+                    if (specify) {
+                        let quandoTerminar = Object.keys(this.quandoTerminar);
+                        if (quandoTerminar.length) return this.playScriptTerminar(script[type[i]].value);
+                        game.currentStage.pauseScene();
+                        game.getCurrentStage.shapeSelected = -1;
+                        specify.start();
+                        game.setCurrentStage(specify);
+                    }
+                    break;
             }
-            // for(let i = 0; i < this.shapes.length; i++) {
-            //     if (this.shapes[i].id == shape.id) this.shapes[i].img = null; 
-            // }
-            this.executingScript = false;
+            await this.sleep(1000);
         }
+        for(let i = 0; i < this.shapes.length; i++) {
+            if (this.shapes[i].id == shapeVerify.id) this.shapes[i].img = new Image(shapeVerify.img); 
+        }
+        this.executingScript = false;
     }
     
 
@@ -283,9 +284,9 @@ class Stage {
                             if (clone) {
                                 if (this.collision(shapeSelected, clone, shapeSelected.dificult) || this.collision(clone, shapeSelected, shapeSelected.dificult)) {
                                     this.shapes = this.shapes.filter(e => e != clone);
-                                    let quandoAcertar = Object.keys(this.shapes[this.shapeSelected].quandoAcertar);
-                                    if (quandoAcertar.length) this.playScript(quandoAcertar, this.shapes[this.shapeSelected].quandoAcertar, true);
-                                    this.shapes[this.shapeSelected].quandoErrar = {};
+                                    let quandoAcertar = Object.keys(shapeSelected.quandoAcertar);
+                                    if (quandoAcertar.length) this.playScript(quandoAcertar, shapeSelected.quandoAcertar, true);
+                                    shapeSelected.quandoErrar = {};
                                     shapeSelected.x = clone.x;
                                     shapeSelected.y = clone.y;
                                     shapeSelected.width = clone.width;
@@ -293,8 +294,8 @@ class Stage {
                                     this.toJSON["Stage"] = this.shapes;
                                     break;
                                 } else {
-                                    let quandoErrar = Object.keys(this.shapes[this.shapeSelected].quandoErrar);
-                                    if (quandoErrar.length) this.playScript(quandoErrar, this.shapes[this.shapeSelected].quandoErrar, this.dragging);
+                                    let quandoErrar = Object.keys(shapeSelected.quandoErrar);
+                                    if (quandoErrar.length) this.playScript(quandoErrar, shapeSelected.quandoErrar, this.dragging);
                                     let angle = Math.atan2(shapeSelected.posInitialY -
                                         shapeSelected.y, shapeSelected.posInitialX -
                                         shapeSelected.x);
@@ -307,8 +308,8 @@ class Stage {
                                     }
                                 }
                             } else {
-                                let quandoErrar = Object.keys(this.shapes[this.shapeSelected].quandoErrar);
-                                if (quandoErrar.length) this.playScript(quandoErrar, this.shapes[this.shapeSelected].quandoErrar, this.dragging);
+                                let quandoErrar = Object.keys(shapeSelected.quandoErrar);
+                                if (quandoErrar.length) this.playScript(quandoErrar, shapeSelected.quandoErrar, this.dragging);
                                 let angle = Math.atan2(shapeSelected.posInitialY -
                                     shapeSelected.y, shapeSelected.posInitialX -
                                     shapeSelected.x);
