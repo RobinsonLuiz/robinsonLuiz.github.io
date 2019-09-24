@@ -4,7 +4,7 @@ $(document).ready(() => {
     let online = navigator.onLine; // true ou false, (há, não há conexão à internet)
     let containerFluid = $('.container-fluid');
     if (online) {
-        let loader = $('#loader');
+        let loader = $('.loading');
         $.ajax({
             url: variaveisDeAmbiente.jogosPorAluno.replace(':id', localStorage.getItem('alunoCodigo')),
             type: 'GET',
@@ -18,12 +18,12 @@ $(document).ready(() => {
                 if (json) {
                     let jogos = json.result;
                     if (jogos.length) {
-                        $(loader).attr('hidden', true);
                         criarCardJogo(jogos, containerFluid, true);
                     } else {
                         $(loader).attr('hidden', true);
                         $(containerFluid).append("Ops, não possui nenhum jogo ainda.");
                     }
+                    $(loader).attr('hidden', true);
                 }
             },
             error: function (err) {

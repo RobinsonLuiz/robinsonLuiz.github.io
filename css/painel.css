@@ -41,6 +41,8 @@ footer {
 
 .imgGame {
     width: 100%;
+    min-height: 160px;
+    max-height: 160px;
 }
 
 section {

@@ -1,12 +1,13 @@
 let movingCorner = -1;
+let sceneScripts;
 class Stage {
 
-    constructor(canvas, id, ids=[], countIds = 1, shapes = [], quandoIniciar={}, quandoTerminar={}) {
+    constructor(canvas, id, ids = [], countIds = 1, shapes = [], quandoIniciar = {}, quandoTerminar = {}) {
         this.id = id;
         this.canvas = canvas;
         this.mouse = new Mouse();
-        this.width = $(window).width() - 20;
-        this.height = $(window).height() - 20;
+        this.width = $(window).width();
+        this.height = $(window).height();
         this.context = canvas.getContext("2d");
         canvas.width = this.width;
         canvas.height = this.height;
@@ -23,7 +24,7 @@ class Stage {
         this.shapeSelected = -1;
         this.dragoffx = 0;
         this.dragoffy = 0;
-        this.toJSON = { Stage: { shapes: []}};
+        this.toJSON = { Stage: { shapes: [] } };
         this.quandoIniciar = quandoIniciar;
         this.quandoTerminar = quandoTerminar;
         this.clone = null;
@@ -35,6 +36,14 @@ class Stage {
             'teletransporte': 5
         };
         this.liveMode = true;
+        let quandoIniciarScrpt = Object.keys(this.quandoIniciar);
+        if (quandoIniciarScrpt.length) {
+            this.playScript(quandoIniciarScrpt, this.quandoIniciar, true);
+        }
+        sceneScripts = {
+            quandoIniciar: Object.keys(this['quandoIniciar']).length + 1,
+            quandoTerminar: Object.keys(this['quandoTerminar']).length + 1,
+        }
         this.startEvents();
     }
 
@@ -100,6 +109,33 @@ class Stage {
 
     sleep(timer) {
         return new Promise((resolve, reject) => setTimeout(() => resolve(timer), timer));
+    }
+
+    
+    async playScriptTerminar(value) {
+        let quandoTerminar = Object.keys(this.quandoTerminar);
+        for (let i = 0; i < quandoTerminar.length; i++) {
+            switch(this.quandoTerminar[quandoTerminar[i]].type) {
+                case "image":
+                    // if (!currentShape.img) currentShape.img = new Image();
+                    // currentShape.img.src = script[type[i]].value;
+                    break;
+                case "sound":
+                    await this.loadAudio(this.quandoTerminar[quandoTerminar[i]].value);
+                    break;
+            }
+        }
+        if (value == 0) {
+            window.location.assign('./jogos.html');
+        } else {
+            let fase = game.getStages().find((stage) => stage.id == game.getCurrentStage().id + value);
+            if (fase) {
+                game.currentStage.pauseScene();
+                game.getCurrentStage.shapeSelected = -1;
+                fase.start();
+                game.setCurrentStage(fase);
+            }
+        }
     }
 
     addShape(shape) {
@@ -171,37 +207,68 @@ class Stage {
         } else return (Math.abs(catX) < halfWidth && Math.abs(catY) < halfHeight);
     }
 
-    async playScript(type, script, proccess=false) {
+    async playScript(type, script, proccess = false, shapeSelected = null, scene) {
         if (!this.executingScript || proccess) {
-            let shape = JSON.parse(JSON.stringify(this.shapes[this.shapeSelected]));
-            for(let i = 0; i < type.length; i++) {
+            // let shape = JSON.parse(JSON.stringify(shapeSelected || this.shapes[this.shapeSelected]));
+            let currentShape = shapeSelected || this.shapes[this.shapeSelected];
+            for (let i = 0; i < type.length; i++) {
                 this.executingScript = true;
                 switch (script[type[i]].type) {
                     case "image":
-                        if (!this.shapes[this.shapeSelected].img) this.shapes[this.shapeSelected].img = new Image();
-                        this.shapes[this.shapeSelected].img.src = script[type[i]].value;
+                        if (!currentShape.img) currentShape.img = new Image();
+                        currentShape.img.src = script[type[i]].value;
                         break;
                     case "sound":
                         await this.loadAudio(script[type[i]].value);
                         break;
                     case "end":
-                        //executeQuandoTerminar;
+                        let quandoTerminar = Object.keys(this.quandoTerminar);
+                        if (quandoTerminar.length) return this.playScriptTerminar(0);
                         window.location.assign('./jogos.html');
                         break;
                     case "next":
+                        let fase = game.getStages().find((stage) => stage.id == game.getCurrentStage().id + 1);
+                        if (fase) {
+                            let quandoTerminar = Object.keys(this.quandoTerminar);
+                            if (quandoTerminar.length) return this.playScriptTerminar(1);
+                            game.currentStage.pauseScene();
+                            game.getCurrentStage.shapeSelected = -1;
+                            fase.start();
+                            game.setCurrentStage(fase);
+                        } else alert("NÃO POSSUI PROXIMO CENÁRIO");
                         break;
                     case "previous":
+                        let ant = game.getStages().find((stage) => stage.id == game.getCurrentStage().id - 1);
+                        if (ant) {
+                            let quandoTerminar = Object.keys(this.quandoTerminar);
+                            if (quandoTerminar.length) return this.playScriptTerminar(-1);
+                            game.currentStage.pauseScene();
+                            game.getCurrentStage.shapeSelected = -1;
+                            ant.start();
+                            game.setCurrentStage(ant);
+                        } else alert("NÃO POSSUI PROXIMO CENÁRIO");
+                        break;
+                    case "specify":
+                        let specify = game.getStages().find((stage) => stage.id == script[type[i]].value);
+                        if (specify) {
+                            let quandoTerminar = Object.keys(this.quandoTerminar);
+                            if (quandoTerminar.length) return this.playScriptTerminar(script[type[i]].value);
+                            game.currentStage.pauseScene();
+                            game.getCurrentStage.shapeSelected = -1;
+                            specify.start();
+                            game.setCurrentStage(specify);
+                        }
                         break;
                 }
                 await this.sleep(1000);
             }
-
-            for(let i = 0; i < this.shapes.length; i++) {
-                if (this.shapes[i].id == shape.id) this.shapes[i].img = null;
-            }
+            // for(let i = 0; i < this.shapes.length; i++) {
+            //     if (this.shapes[i].id == shape.id) this.shapes[i].img = null; 
+            // }
             this.executingScript = false;
         }
     }
+    
 
 
     drop() {
@@ -265,6 +332,8 @@ class Stage {
                             shapeSelected.x = shapeSelected.posInitialX;
                             shapeSelected.y = shapeSelected.posInitialY;
                         } 
+                        let quandoErrar = Object.keys(shapeSelected.quandoErrar);
+                        if (quandoErrar.length) this.playScript(quandoErrar, shapeSelected.quandoErrar, this.dragging);
                     }   
                 }
                 this.dragging = false;
