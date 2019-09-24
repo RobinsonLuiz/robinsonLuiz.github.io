@@ -7,43 +7,42 @@ btnLogin.click((e) => {
     let online = navigator.onLine;
     let loader = $('.loading');
     if (online) {
-        $.ajax(variaveisDeAmbiente.alunoLogin, {
+        $(loader).removeAttr('hidden');
+    fetch(variaveisDeAmbiente.alunoLogin, {
             method: 'POST',
             headers: {
                 "Content-type": "Application/json"
             },
-            body: JSON.stringify(bodyLogin),
-            beforeSend: function () {
-                $(loader).removeAttr('hidden');
-            },
-            success: function (json) {
-                if (json) {
-                    let aluno = json.result;
-                    $(loader).attr('hidden', true);
-                    if (!aluno || !aluno.codigo) return $(error_register).removeAttr('hidden');
-                    else {
-                        $(success_register).removeAttr('hidden');
-                        $(error_register).attr("hidden", true);
-                        setTimeout(() => {
-                            $(success_register).attr("hidden", true);
-                            $(modal).modal('hide');
-                            localStorage.setItem("alunoCodigo", aluno.codigo);
-                            localStorage.setItem('alunoLogin', aluno.usuario);
-                            localStorage.setItem('alunoSenha', aluno.senha);
-                            openDataBase().then(async (db) => {
-                                await addAluno(db, aluno);
-                            })
-                            window.location.assign("./jogos.html");
-                        }, 1500);
-                    }
-                }
-            },
-            error: function (err) {
-                openDataBase().then((db) => carregarJogosDb(db, containerFluid));
-                $(containerFluid).append("Ops, tivemos algum erro de comunicação com o servidor");
+            body: JSON.stringify(bodyLogin)
+        })
+        .then(res => res.json()) // expecting a json response
+        .then(json => {
+            if (json) {
+                let aluno = json.result;
                 $(loader).attr('hidden', true);
+                if (!aluno || !aluno.codigo) return $(error_register).removeAttr('hidden');
+                else {
+                    $(success_register).removeAttr('hidden');
+                    $(error_register).attr("hidden", true);
+                    setTimeout(() => {
+                        $(success_register).attr("hidden", true);
+                        $(modal).modal('hide');
+                        localStorage.setItem("alunoCodigo", aluno.codigo);
+                        localStorage.setItem('alunoLogin', aluno.usuario);
+                        localStorage.setItem('alunoSenha', aluno.senha);
+                        openDataBase().then(async (db) => {
+                            await addAluno(db, aluno);
+                        })
+                        window.location.assign("./jogos.html");
+                    }, 1500);
+                }
             }
         })
+        .catch(err => {
+            console.log('err', err)
+            $(loader).attr('hidden', true);
+            $(error_register).removeAttr("hidden");
+        });
     } else {
         if (localStorage.getItem('alunoLogin') == bodyLogin.usuario && localStorage.getItem('alunoSenha') == bodyLogin.senha) {
             $(success_register).removeAttr('hidden');
