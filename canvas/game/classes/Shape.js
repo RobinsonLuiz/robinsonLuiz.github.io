@@ -92,7 +92,9 @@ class Shape {
     draw(ctx) {
         if (this.visible) {
             ctx.globalAlpha = this.opacity;
-            ctx.fillStyle = this.backGroundColor;
+            if (this.img || this.text) {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+            } else ctx.fillStyle = this.backGroundColor;
             ctx.fillRect(this.x, this.y, this.width, this.height);
             if (this.bordas) {
                 ctx.strokeStyle = "black";

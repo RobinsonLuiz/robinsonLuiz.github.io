@@ -1,8 +1,8 @@
 class Game {
 
-    constructor() {
-        this.stages = []
-        this.currentStage = {};
+    constructor(stages=[], currentStage={}) {
+        this.stages = stages
+        this.currentStage = currentStage
     }
 
     setStage(stage) {
@@ -36,7 +36,7 @@ class Game {
         if (json && json !== 'null') {
             construct = JSON.parse(atob(atob(bufferToBase64(json.data))));
             construct.forEach((stageConstruct, index) => {
-                let staging = new Stage(document.querySelector('canvas'), ++index, stageConstruct.ids, stageConstruct.countIds, [], stageConstruct.quandoIniciar, stageConstruct.quandoTerminar);
+                let staging = new Stage(document.querySelector('canvas'), ++index, stageConstruct.ids, stageConstruct.countIds, [], stageConstruct.quandoIniciar, stageConstruct.quandoTerminar, stageConstruct.acertosDoCenario);
                 stageConstruct.shapes.forEach((shape) => {
                     let newShape = new Shape(shape.x, shape.y, shape.width, shape.height, shape.zIndex, shape.clickable, shape.visible, shape.velocity, shape.backGroundColor, shape.id, shape.matchId, shape.image64, shape.text, shape.opacity, shape.primarySound, shape.bordas, shape.dificult, shape.quandoClicar, shape.quandoAcertar, shape.quandoErrar);
                     staging.addShape(newShape);
