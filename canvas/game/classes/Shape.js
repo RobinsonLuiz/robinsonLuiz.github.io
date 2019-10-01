@@ -1,5 +1,3 @@
-$('.possible-ids').selectpicker();
-
 class Shape {
 
 

@@ -5,12 +5,13 @@ let btnSceneOne = $('.1-btn-scene');
 let modal = $('#excluirCena');
 let userInfo = $('.user-info');
 let currentGame = localStorage.getItem('id');
-
+let loading = $('.loading');
 openDataBase().then((db) => {
     let idGame = currentGame;
     let tx = db.transaction(['jogos'], 'readonly');
     let store = tx.objectStore('jogos');
     let requestFromIDB = store.index('id').get(idGame ? Number(idGame) : 0);
+    $(loading).attr('hidden', false);
     requestFromIDB.onsuccess = function (event) {
         let result = event.target.result ? event.target.result.jogo : null;
         if (result) {
@@ -24,5 +25,6 @@ openDataBase().then((db) => {
         }
         stage.start();
         stage.resizeResolution();
+        $(loading).attr('hidden', true);
     }
 })
