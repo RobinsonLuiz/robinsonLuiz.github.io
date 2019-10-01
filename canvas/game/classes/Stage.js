@@ -37,10 +37,6 @@ class Stage {
             'teletransporte': 5
         };
         this.liveMode = true;
-        let quandoIniciarScrpt = Object.keys(this.quandoIniciar);
-        if (quandoIniciarScrpt.length) {
-            this.playScript(quandoIniciarScrpt, this.quandoIniciar, true);
-        }
         sceneScripts = {
             quandoIniciar: Object.keys(this['quandoIniciar']).length + 1,
             quandoTerminar: Object.keys(this['quandoTerminar']).length + 1,
@@ -176,6 +172,10 @@ class Stage {
 
     start() {
         this.currentStage = true;
+        let quandoIniciarScrpt = Object.keys(this.quandoIniciar);
+        if (quandoIniciarScrpt.length) {
+            this.playScript(quandoIniciarScrpt, this.quandoIniciar, true);
+        }
         this.looping = setInterval(() => {
             if (this.currentStage) {
                 this.getContext().clearRect(0, 0, this.width, this.height);
@@ -250,6 +250,7 @@ class Stage {
                         game.currentStage.pauseScene();
                         game.getCurrentStage.shapeSelected = -1;
                         fase.start();
+                        fase.resizeResolution();
                         game.setCurrentStage(fase);
                     } else window.location.assign('./jogos.html');
                     break;
@@ -261,6 +262,7 @@ class Stage {
                         game.currentStage.pauseScene();
                         game.getCurrentStage.shapeSelected = -1;
                         ant.start();
+                        ant.resizeResolution();
                         game.setCurrentStage(ant);
                     } else window.location.assign('./jogos.html');
                     break;
@@ -272,14 +274,15 @@ class Stage {
                         game.currentStage.pauseScene();
                         game.getCurrentStage.shapeSelected = -1;
                         specify.start();
+                        specify.resizeResolution();
                         game.setCurrentStage(specify);
                     } else window.location.assign('./jogos.html');
                     break;
             }
-            await this.sleep(1000);
+            // await this.sleep(1000);
         }
         for(let i = 0; i < this.shapes.length; i++) {
-            if (this.shapes[i].id == shapeVerify.id) this.shapes[i].img = new Image(shapeVerify.img); 
+            if (this.shapes[i].id == shapeVerify.id) this.shapes[i].image64 = new Image(shapeVerify.image64);
         }
         this.executingScript = false;
     }

@@ -1,9 +1,10 @@
 $(document).ready(() => {
     localStorage.setItem('currentGame', null);
     localStorage.setItem('render', null);
+    let dateUpdate = new Date(localStorage.getItem('dateUpdate'));
     let online = navigator.onLine; // true ou false, (há, não há conexão à internet)
     let containerFluid = $('.container-fluid');
-    if (online) {
+    if (online && (new Date().getTime() - dateUpdate.getTime() >= 500000) || online && !dateUpdate) {
         let loader = $('.loading');
         $.ajax({
             url: variaveisDeAmbiente.jogosPorAluno.replace(':id', localStorage.getItem('alunoCodigo')),
@@ -25,6 +26,7 @@ $(document).ready(() => {
                     }
                     $(loader).attr('hidden', true);
                 }
+                localStorage.setItem('dateUpdate', new Date());
             },
             error: function (err) {
                 openDataBase().then((db) => carregarJogosDb(db, containerFluid));
@@ -40,21 +42,23 @@ $(document).ready(() => {
 
 function criarCardJogo(jogos, containerFluid, online = false) {
     jogos.forEach((jogo) => {
-        let card = `
-    <div class="col-md-3 col-sm-4 mb-3"> 
-        <div class="card">
-            <a href="#" class="card-link">
-                <input type="hidden" class="id" value="${jogo.codigo ? jogo.codigo : jogo.id}" />
-                <input type="hidden" class="nome" value="${jogo.nome}" />
-                <img class="imgGame" data-toggle="tooltip" title="" class="card-img-top" src="${jogo.foto ? atob(bufferToBase64(jogo.foto.data)) : '#'}" alt="${jogo.nome}">
-            </a>
-            <div class="card-body">
-                <p class="card-text">${jogo.nome}</p>
+        if (jogo.aluno == localStorage.getItem('alunoCodigo')) {
+            let card = `
+        <div class="col-md-3 col-sm-4 mb-3"> 
+            <div class="card">
+                <a href="#" class="card-link">
+                    <input type="hidden" class="id" value="${jogo.codigo ? jogo.codigo : jogo.id}" />
+                    <input type="hidden" class="nome" value="${jogo.nome}" />
+                    <img class="imgGame" data-toggle="tooltip" title="" class="card-img-top" src="${jogo.foto ? atob(bufferToBase64(jogo.foto.data)) : '#'}" alt="${jogo.nome}">
+                </a>
+                <div class="card-body">
+                    <p class="card-text">${jogo.nome}</p>
+                </div>
             </div>
-        </div>
-    </div>`;
-        $(containerFluid).find('.row').append(card);
-        if (online) openDataBase().then((db) => addJogo(db, jogo));
+        </div>`;
+            $(containerFluid).find('.row').append(card);
+            if (online) openDataBase().then((db) => addJogo(db, jogo));
+        }
     })
     $('.card').each((i, card) => {
         let image = $(card).find('.card-link');
@@ -75,7 +79,6 @@ function carregarJogosDb(db, containerFluid) {
     let jogoDB = store.index("id").getAll();
     jogoDB.onsuccess = function () {
         let data = jogoDB.result;
-        console.log(data);
         if (data) {
             criarCardJogo(data, containerFluid);
         }
