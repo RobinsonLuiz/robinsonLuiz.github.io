@@ -23,6 +23,7 @@ class Stage {
         this.dragging = false;
         this.shapeSelected = -1;
         this.dragoffx = 0;
+        this.resizeExecuted = false;
         this.acertosExecutados = 0;
         this.acertosDoCenario = acertosDoCenario;
         this.dragoffy = 0;
@@ -46,7 +47,10 @@ class Stage {
 
 
     resizeResolution() {
-        this.shapes.forEach((shape) => shape.resize(800, 1024, this.height, this.width));
+        if (!this.resizeExecuted) {
+            this.resizeExecuted = true;
+            this.shapes.forEach((shape) => shape.resize(800, 1024, this.height, this.width));
+        }
     }
 
     setName(name) {
