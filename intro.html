@@ -111,5 +111,26 @@
 <script src="./js/login.js"></script>
 <script src="./js/showPhoto.js"></script>
 <script src="./js/indexedDB.js"></script>
+<script>
+    openDataBase().then((db) => console.log('DB OPEN WITH SUCCESS'));
+    $(document).ready(() => {
+        // localStorage.clear();
+        var DBOpenRequest = indexedDB.open("spacetea-client", 1);
 
+        DBOpenRequest.onsuccess = function(event) {
+            db = DBOpenRequest.result;
+            clearData();
+        };
+
+        function clearData() {
+            var transaction = db.transaction(["jogos"], "readwrite");
+
+            var objectStore = transaction.objectStore("jogos");
+
+            var objectStoreRequest = objectStore.clear();
+
+            objectStoreRequest.onsuccess = function(event) {};
+        };
+    });
+</script>
 </html>

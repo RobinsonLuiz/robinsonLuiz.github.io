@@ -1,24 +1,13 @@
 function validaNome(name) {
-    if (name.value) {
-        let contaPalavra = 0;
-        for (let i = 0; i < name.value.length; i++)
-            if (name.value.charAt(i) >= 'a' && name.value.charAt(i) <= 'z') contaPalavra++;
-        if (contaPalavra < 10) {
-            name.classList.remove('color-btn');
-            name.classList.remove('correto');
-            name.classList.add('errado');
-            return false;
-        } else {
-            name.classList.remove('color-btn');
-            name.classList.remove('errado');
-            name.classList.add('correto');
-        }
-    } else {
-        name.classList.add('errado');
+    if (name.value && name.value.length <= 3) {
+        name.classList.remove('color-btn');
         name.classList.remove('correto');
-        return false;
+        name.classList.add('errado');
+    } else {
+        name.classList.add('correto');
+        name.classList.remove('errado');
+        return name.value;
     }
-    return name.value;
 }
 
 function validaSenha(senha, csenha) {

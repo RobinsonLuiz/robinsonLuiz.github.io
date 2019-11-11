@@ -8,7 +8,10 @@ function openDataBase() {
             objectStore.createIndex('id', 'id', { unique: true });
             let objectStoreAluno = db.createObjectStore('aluno', { autoIncrement: true, keyPath: 'codigo' });
             objectStoreAluno.createIndex('codigo', 'codigo', { unique: true });
-            return resolve(db);
+            let transaction = event.target.transaction;
+            transaction.oncomplete = function(event) {    
+                return resolve(db);
+            }
         }
         dbReq.onsuccess = function (event) {
             db = event.target.result;

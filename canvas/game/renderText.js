@@ -10,15 +10,13 @@ text.addEventListener("click", function () {
                 let textoFracionado = new Shape(Math.random() * 800, Math.random() * 600, tamanhoLetra * textValue.length, 100, 1, true, true, 10, null, id,
                     [], null, { value: textValue[i], tam: tamanhoLetra, fill: 'black' });
                 stage.addShape(textoFracionado);
-                insertPossibleId(id, game);
-                ++id;
+                insertPossibleId(game);
             }
         } else {
             let texto = new Shape(Math.random() * 800, Math.random() * 600, tamanhoLetra * textValue.length, 100, 1, true, true, 10, null, id,
                 [], null, { value: textValue, tam: tamanhoLetra, fill: 'black' }, 1, null, bordas ? true : false);
             stage.addShape(texto);
-            insertPossibleId(id, game);
-            ++id;
+            insertPossibleId(game);
         }
         $('#adicionarTexto').modal('hide');
     }

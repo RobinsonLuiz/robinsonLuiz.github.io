@@ -25,6 +25,5 @@ $('.btn-foto').on('click', (event) => {
             new Shape(Math.random() * 800, Math.random() * 600, 300, 200, 2, true, true, 10, null, id,
             [], $(fotoCanvas).attr('src'), '', 1, null, bordas));
     }
-    insertPossibleId(id, game);
-    ++id;
+    insertPossibleId(game);
 });

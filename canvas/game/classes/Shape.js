@@ -1,3 +1,5 @@
+$('.possible-ids').selectpicker();
+
 class Shape {
 
 
@@ -18,9 +20,10 @@ class Shape {
         primarySound = null,
         bordas = true,
         dificult = 0,
-        quandoClicar={},
-        quandoAcertar={},
-        quandoErrar={}) {
+        quandoClicar = {},
+        quandoAcertar = {},
+        quandoErrar = {},
+        hidden = false) {
         this.dificult = dificult;
         this.primarySound = primarySound;
         this.opacity = opacity;
@@ -46,6 +49,7 @@ class Shape {
         this.quandoClicar = quandoClicar;
         this.quandoAcertar = quandoAcertar;
         this.quandoErrar = quandoErrar;
+        this.hidden = hidden;
         if (base64Image) {
             this.img = new Image();
             this.img.src = base64Image;
@@ -53,11 +57,11 @@ class Shape {
     }
 
     //resize in mode tablet
-    resize(previousHeight, previousWidth, height, width) {
+    resize(previousHeight, previousWidth, height, width, padx, pady) {
         this.width = (this.width / previousWidth) * width;
         this.height = (this.height / previousHeight) * height;
-        this.x = (this.x / previousWidth) * width;
-        this.y = (this.y / previousHeight) * height;
+        this.x = padx + ((this.x / previousWidth) * width);
+        this.y = pady + ((this.y / previousHeight) * height);
     }
 
     /**
@@ -83,12 +87,12 @@ class Shape {
      * @param {Float} mouseY - posição mouse y
      */
     contains(mouseX, mouseY) {
-        return  (this.x <= mouseX) && (this.x + this.width >= mouseX) &&
-        (this.y <= mouseY) && (this.y + this.height >= mouseY);
+        return (this.x <= mouseX) && (this.x + this.width >= mouseX) &&
+            (this.y <= mouseY) && (this.y + this.height >= mouseY);
     }
 
     draw(ctx) {
-        if (this.visible) {
+        if (this.visible && !this.hidden) {
             ctx.globalAlpha = this.opacity;
             if (this.img || this.text) {
                 ctx.fillStyle = 'rgba(255, 255, 255, 0)';
@@ -112,7 +116,7 @@ class Shape {
             ctx.restore();
         }
     }
-    
+
     /**
      * Update de velocidade
      */
